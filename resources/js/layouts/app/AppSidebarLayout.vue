@@ -7,16 +7,18 @@ import type { BreadcrumbItemType } from '@/types';
 
 interface Props {
     breadcrumbs?: BreadcrumbItemType[];
+    sidebarMenus?: Array<any>;
 }
 
 withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
+    sidebarMenus: () => [],
 });
 </script>
 
 <template>
     <AppShell variant="sidebar">
-        <AppSidebar />
+        <AppSidebar :menus="sidebarMenus" />
         <AppContent variant="sidebar" class="overflow-x-hidden">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
             <slot />
