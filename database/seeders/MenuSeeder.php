@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Group;
-use App\Models\MenuItem;
+use App\Models\Menu;
 use Illuminate\Database\Seeder;
 
-class MenuItemSeeder extends Seeder
+class MenuSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,7 +18,7 @@ class MenuItemSeeder extends Seeder
                                     ->first();
 
         if ($mainNavigationGroup) {
-            MenuItem::create([
+            Menu::create([
                 'name' => 'Manajemen Menu',
                 'url' => '/menus',
                 'icon' => 'List',

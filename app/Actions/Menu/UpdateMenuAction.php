@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Actions\MenuItem;
+namespace App\Actions\Menu;
 
 use App\Actions\RulledAction;
-use App\Models\MenuItem;
-use App\Repositories\MenuItemRepository;
+use App\Models\Menu;
+use App\Repositories\MenuRepository;
 
-class CreateMenuItemAction extends RulledAction
+class UpdateMenuAction extends RulledAction
 {
-    public function __construct(protected MenuItemRepository $menuItemRepository)
+    public function __construct(protected MenuRepository $menuRepository)
     {
     }
 
-    public function handle(array $data): MenuItem
+    public function handle(Menu $menu, array $data): Menu
     {
         $validatedData = $this->validate($data);
 
-        return $this->menuItemRepository->store([
+        $this->menuRepository->update($menu->id, [
             'name' => $validatedData['name'],
             'url' => $validatedData['url'] ?? null,
             'icon' => $validatedData['icon'] ?? null,
@@ -24,6 +24,8 @@ class CreateMenuItemAction extends RulledAction
             'parent_id' => $validatedData['parent_id'] ?? null,
             'group_id' => $validatedData['group_id'],
         ]);
+
+        return $menu->fresh();
     }
 
     protected function rules(): array
@@ -33,7 +35,7 @@ class CreateMenuItemAction extends RulledAction
             'url' => 'nullable|string|max:255',
             'icon' => 'nullable|string|max:255',
             'order' => 'nullable|integer',
-            'parent_id' => 'nullable|exists:menu_items,id',
+            'parent_id' => 'nullable|exists:menus,id',
             'group_id' => 'required|exists:groups,id',
         ];
     }

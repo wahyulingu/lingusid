@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Repositories\GroupRepository;
-use App\Repositories\MenuItemRepository;
+use App\Repositories\MenuRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,7 +14,7 @@ class DashboardController extends Controller
 
     public function __construct(
         protected GroupRepository $groupRepository,
-        protected MenuItemRepository $menuItemRepository
+        protected MenuRepository $menuRepository
     ) {
         $this->mainNavigationGroup = $this->groupRepository->index(
             filters: ['type' => 'menu_container', 'name' => 'Main Navigation']
@@ -34,7 +34,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $sidebarMenus = $this->menuItemRepository->index(
+        $sidebarMenus = $this->menuRepository->index(
             filters: ['group_id' => $this->mainNavigationGroup->id, 'parent_id' => null],
             relations: ['children'],
             orderBy: 'order',

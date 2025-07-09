@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class MenuItem extends Model
+class Menu extends Model
 {
     protected $fillable = [
         'name',
@@ -22,7 +22,7 @@ class MenuItem extends Model
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(MenuItem::class, 'parent_id');
+        return $this->belongsTo(Menu::class, 'parent_id');
     }
 
     /**
@@ -30,7 +30,7 @@ class MenuItem extends Model
      */
     public function children(): HasMany
     {
-        return $this->hasMany(MenuItem::class, 'parent_id')->orderBy('order');
+        return $this->hasMany(Menu::class, 'parent_id')->orderBy('order');
     }
 
     /**
