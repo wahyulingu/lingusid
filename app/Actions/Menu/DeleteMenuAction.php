@@ -12,8 +12,9 @@ class DeleteMenuAction extends Action
     {
     }
 
-    public function handle(Menu $menu): bool
+    protected function handler(array $validatedPayload, array $payload): bool
     {
+        $menu = $payload['menu'];
         return $this->menuRepository->delete($menu->id);
     }
 }
