@@ -5,7 +5,7 @@ namespace App\Actions;
 use App\Contracts\Action\RuledActionContract;
 use Illuminate\Support\Facades\Validator;
 
-abstract class Action
+abstract class BaseAction
 {
     /**
      * Handle the action's logic.

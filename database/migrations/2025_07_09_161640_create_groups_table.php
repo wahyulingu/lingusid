@@ -20,6 +20,12 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('groups')->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::create('model_has_groups', function (Blueprint $table) {
+            $table->foreignId('group_id')->constrained()->onDelete('cascade');
+            $table->morphs('groupable');
+            $table->unique(['group_id', 'groupable_id', 'groupable_type'], 'model_has_groups_group_id_groupable_id_type_unique');
+        });
     }
 
     /**
@@ -27,6 +33,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('model_has_groups');
         Schema::dropIfExists('groups');
     }
 };

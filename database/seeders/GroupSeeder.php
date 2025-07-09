@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Group;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
-
 class GroupSeeder extends Seeder
 {
     /**
@@ -13,11 +11,6 @@ class GroupSeeder extends Seeder
      */
     public function run(): void
     {
-        Group::create([
-            'name' => 'Main Navigation',
-            'slug' => Str::slug('Main Navigation'),
-            'type' => 'menu_container',
-            'description' => 'This group holds the main navigation menu items.',
-        ]);
+        Group::factory()->count(5)->create();
     }
 }

@@ -4,7 +4,7 @@ namespace App\Contracts\Model;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-interface HasSpecifications
+interface HasSpecificationsContract
 {
     public function specifications(): MorphMany;
 }

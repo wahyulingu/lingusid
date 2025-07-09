@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->integer('order')->default(0);
             $table->foreignId('parent_id')->nullable()->constrained('menus')->onDelete('cascade');
-            $table->foreignId('group_id')->constrained('groups')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

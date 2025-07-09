@@ -5,7 +5,7 @@ namespace App\Contracts\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-interface HasPicture
+interface HasPictureContract
 {
     public function picture(): HasOne|MorphOne;
 }

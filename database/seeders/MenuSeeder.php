@@ -13,18 +13,10 @@ class MenuSeeder extends Seeder
      */
     public function run(): void
     {
-        $mainNavigationGroup = Group::where('type', 'menu_container')
-                                    ->where('name', 'Main Navigation')
-                                    ->first();
+        $groups = Group::factory()->count(3)->create();
 
-        if ($mainNavigationGroup) {
-            Menu::create([
-                'name' => 'Manajemen Menu',
-                'url' => '/menus',
-                'icon' => 'List',
-                'order' => 99,
-                'group_id' => $mainNavigationGroup->id,
-            ]);
-        }
+        Menu::factory()->count(10)->create()->each(function ($menu) use ($groups) {
+            $menu->groups()->attach($groups->random(1));
+        });
     }
 }

@@ -5,7 +5,7 @@ namespace App\Contracts\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-interface HasFile
+interface HasVideoContract
 {
-    public function file(): HasOne|MorphOne;
+    public function video(): HasOne|MorphOne;
 }

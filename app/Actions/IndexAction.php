@@ -4,7 +4,7 @@ namespace App\Actions;
 
 use App\Contracts\Action\RuledActionContract;
 
-abstract class IndexAction extends Action implements RuledActionContract
+abstract class IndexAction extends BaseAction implements RuledActionContract
 {
     /**
      * Get the validation rules for the index action.

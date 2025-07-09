@@ -6,7 +6,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-abstract class RulledAction extends Action
+abstract class RuledAction extends BaseAction
 {
     use Dispatchable;
 
