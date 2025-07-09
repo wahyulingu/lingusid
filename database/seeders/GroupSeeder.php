@@ -14,10 +14,10 @@ class GroupSeeder extends Seeder
     public function run(): void
     {
         Group::create([
-            'name' => 'Manajemen Menu',
-            'slug' => Str::slug('Manajemen Menu'),
-            'type' => 'menu',
-            'description' => json_encode(['url' => '/menus', 'icon' => 'List']),
+            'name' => 'Main Navigation',
+            'slug' => Str::slug('Main Navigation'),
+            'type' => 'menu_container',
+            'description' => 'This group holds the main navigation menu items.',
         ]);
     }
 }

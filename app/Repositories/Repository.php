@@ -154,35 +154,45 @@ abstract class Repository
         int $paginate = 0,
         array $columns = ['*'],
         string $pageName = 'page',
-        ?int $page = null
+        ?int $page = null,
+        array $relations = [],
+        string $orderBy = 'id',
+        string $orderDirection = 'desc'
     ): Collection|LengthAwarePaginator {
-        $builder = $this->model(fn ($model) => $model::where(function (Builder $query) use ($filters) {
-            foreach ($filters as $filterKey => $filterValue) {
-                if (is_string($filterValue)) {
-                    foreach (explode('|', $filterKey) as $keyIndex => $keyValue) {
-                        if ($keyValue !== '') {
-                            if (str_ends_with($keyValue, ':')) {
-                                $key = substr($keyValue, 0, -1);
-                                $keyIndex == 0
-                                    ? $query->where($key, 'LIKE', $filterValue)
-                                    : $query->orWhere($key, 'LIKE', $filterValue);
-                            } else {
-                                $keyIndex == 0
-                                    ? $query->where($keyValue, $filterValue)
-                                    : $query->orWhere($keyValue, $filterValue);
-                            }
+        $builder = $this->model(fn ($model) => $model::query());
+
+        // Apply relations
+        if (! empty($relations)) {
+            $builder->with($relations);
+        }
+
+        // Apply filters
+        foreach ($filters as $filterKey => $filterValue) {
+            if ($filterKey === 'exclude' && is_array($filterValue)) {
+                foreach ($filterValue as $excludeKey => $excludeValue) {
+                    $builder->where($excludeKey, '!=', $excludeValue);
+                }
+            } elseif (is_string($filterValue)) {
+                foreach (explode('|', $filterKey) as $keyIndex => $keyValue) {
+                    if ($keyValue !== '') {
+                        if (str_ends_with($keyValue, ':')) {
+                            $key = substr($keyValue, 0, -1);
+                            $builder->where($key, 'LIKE', $filterValue);
+                        } else {
+                            $builder->where($keyValue, $filterValue);
                         }
                     }
-                } else {
-                    $query->whereHas($filterKey, fn ($q) => $q->where(
-                        $filterValue->getKeyName(),
-                        $filterValue->getKey()
-                    ));
                 }
+            } else {
+                $builder->whereHas($filterKey, fn ($q) => $q->where(
+                    $filterValue->getKeyName(),
+                    $filterValue->getKey()
+                ));
             }
-        }));
+        }
 
-        $builder->latest();
+        // Apply ordering
+        $builder->orderBy($orderBy, $orderDirection);
 
         return $paginate > 0
             ? $builder->paginate($paginate, $columns, $pageName, $page)

@@ -2,24 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\MenuItem\CreateMenuItemAction;
+use App\Actions\MenuItem\DeleteMenuItemAction;
+use App\Actions\MenuItem\UpdateMenuItemAction;
 use App\Models\Group;
+use App\Models\MenuItem;
+use App\Repositories\GroupRepository;
+use App\Repositories\MenuItemRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class MenuController extends Controller
 {
+    protected Group $mainNavigationGroup;
+
+    public function __construct(
+        protected GroupRepository $groupRepository,
+        protected MenuItemRepository $menuItemRepository
+    ) {
+        $this->mainNavigationGroup = $this->groupRepository->index(
+            filters: ['type' => 'menu_container', 'name' => 'Main Navigation']
+        )->first();
+
+        if (! $this->mainNavigationGroup) {
+            // Handle case where main navigation group doesn't exist
+            // For now, we'll just create it, or throw an error
+            $this->mainNavigationGroup = $this->groupRepository->store([
+                'name' => 'Main Navigation',
+                'slug' => 'main-navigation',
+                'type' => 'menu_container',
+                'description' => 'This group holds the main navigation menu items.',
+            ]);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $menus = Group::where('type', 'menu')
-            ->whereNull('parent_id')
-            ->with('children')
-            ->orderBy('name')
-            ->get()
-            ->map($this->transformGroup());
+        $menus = $this->menuItemRepository->index(
+            filters: ['group_id' => $this->mainNavigationGroup->id, 'parent_id' => null],
+            relations: ['children'],
+            orderBy: 'order',
+            orderDirection: 'asc'
+        );
 
         return Inertia::render('Menus/Index', [
             'menus' => $menus,
@@ -31,7 +58,11 @@ class MenuController extends Controller
      */
     public function create()
     {
-        $parentMenus = Group::where('type', 'menu')->whereNull('parent_id')->orderBy('name')->get();
+        $parentMenus = $this->menuItemRepository->index(
+            filters: ['group_id' => $this->mainNavigationGroup->id, 'parent_id' => null],
+            orderBy: 'order',
+            orderDirection: 'asc'
+        );
 
         return Inertia::render('Menus/Create', [
             'parentMenus' => $parentMenus,
@@ -41,22 +72,11 @@ class MenuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, CreateMenuItemAction $createMenuItemAction)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'url' => 'nullable|string|max:255',
-            'icon' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:groups,id',
-        ]);
-
-        Group::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'type' => 'menu',
-            'description' => json_encode(['url' => $request->url, 'icon' => $request->icon]),
-            'parent_id' => $request->parent_id,
-        ]);
+        $data = $request->all();
+        $data['group_id'] = $this->mainNavigationGroup->id;
+        $createMenuItemAction->handle($data);
 
         return redirect()->route('menus.index')
             ->with('message', 'Menu berhasil ditambahkan.');
@@ -65,30 +85,30 @@ class MenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $menu)
+    public function show(MenuItem $menu)
     {
-        $this->ensureIsMenu($menu);
+        $this->ensureIsMainNavigationMenuItem($menu);
         $menu->load('children', 'parent');
 
         return Inertia::render('Menus/Show', [
-            'menu' => $this->transformGroup()->__invoke($menu),
+            'menu' => $menu,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $menu)
+    public function edit(MenuItem $menu)
     {
-        $this->ensureIsMenu($menu);
-        $parentMenus = Group::where('type', 'menu')
-            ->whereNull('parent_id')
-            ->where('id', '!=', $menu->id)
-            ->orderBy('name')
-            ->get();
+        $this->ensureIsMainNavigationMenuItem($menu);
+        $parentMenus = $this->menuItemRepository->index(
+            filters: ['group_id' => $this->mainNavigationGroup->id, 'parent_id' => null, 'exclude' => ['id' => $menu->id]],
+            orderBy: 'order',
+            orderDirection: 'asc'
+        );
 
         return Inertia::render('Menus/Edit', [
-            'menu' => $this->transformGroup()->__invoke($menu),
+            'menu' => $menu,
             'parentMenus' => $parentMenus,
         ]);
     }
@@ -96,22 +116,12 @@ class MenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $menu)
+    public function update(Request $request, MenuItem $menu, UpdateMenuItemAction $updateMenuItemAction)
     {
-        $this->ensureIsMenu($menu);
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'url' => 'nullable|string|max:255',
-            'icon' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:groups,id',
-        ]);
-
-        $menu->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => json_encode(['url' => $request->url, 'icon' => $request->icon]),
-            'parent_id' => $request->parent_id,
-        ]);
+        $this->ensureIsMainNavigationMenuItem($menu);
+        $data = $request->all();
+        $data['group_id'] = $this->mainNavigationGroup->id; // Ensure group_id is set
+        $updateMenuItemAction->handle($menu, $data);
 
         return redirect()->route('menus.index')
             ->with('message', 'Menu berhasil diperbarui.');
@@ -120,39 +130,22 @@ class MenuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $menu)
+    public function destroy(MenuItem $menu, DeleteMenuItemAction $deleteMenuItemAction)
     {
-        $this->ensureIsMenu($menu);
-        $menu->delete();
+        $this->ensureIsMainNavigationMenuItem($menu);
+        $deleteMenuItemAction->handle($menu);
 
         return redirect()->route('menus.index')
             ->with('message', 'Menu berhasil dihapus.');
     }
 
     /**
-     * Abort if the group is not a menu.
+     * Abort if the menu item does not belong to the main navigation group.
      */
-    private function ensureIsMenu(Group $group)
+    private function ensureIsMainNavigationMenuItem(MenuItem $menuItem)
     {
-        if ($group->type !== 'menu') {
+        if ($menuItem->group_id !== $this->mainNavigationGroup->id) {
             abort(404);
         }
-    }
-
-    /**
-     * Get a closure to transform menu group.
-     */
-    private function transformGroup(): \Closure
-    {
-        return function (Group $group) {
-            $data = json_decode($group->description, true);
-            $group->url = $data['url'] ?? null;
-            $group->icon = $data['icon'] ?? null;
-            if ($group->relationLoaded('children')) {
-                $group->children = $group->children->map($this->transformGroup());
-            }
-
-            return $group;
-        };
     }
 }

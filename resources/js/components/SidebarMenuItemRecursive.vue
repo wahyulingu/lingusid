@@ -27,13 +27,15 @@ import { Link } from '@inertiajs/vue3';
 import { SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubButton } from '@/components/ui/sidebar';
 import Icon from '@/components/Icon.vue'; // Pastikan komponen Icon Anda ada
 
-interface Menu {
+interface MenuItem {
     id: number;
     name: string;
     url?: string;
     icon?: string;
+    order: number;
     parent_id?: number;
-    children?: Menu[];
+    group_id: number;
+    children?: MenuItem[];
 }
 
 const props = defineProps<{ menus: Menu[] }>();
