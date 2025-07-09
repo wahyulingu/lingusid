@@ -3,33 +3,30 @@
 namespace App\Actions\Group;
 
 use App\Actions\RulledAction;
+use App\Contracts\Action\RuledActionContract;
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 use Illuminate\Support\Str;
 
-class CreateGroupAction extends RulledAction
+class CreateGroupAction extends RulledAction implements RuledActionContract
 {
-    public function __construct(protected GroupRepository $groupRepository)
-    {
-    }
+    public function __construct(protected GroupRepository $groupRepository) {}
 
-    public function handle(array $data): Group
+    protected function handler(array $validatedPayload, array $payload): Group
     {
-        $validatedData = $this->validate($data);
-
         return $this->groupRepository->store([
-            'name' => $validatedData['name'],
-            'slug' => Str::slug($validatedData['name']),
-            'type' => $validatedData['type'],
+            'name' => $validatedPayload['name'],
+            'slug' => Str::slug($validatedPayload['name']),
+            'type' => $validatedPayload['type'],
             'description' => json_encode([
-                'url' => $validatedData['url'] ?? null,
-                'icon' => $validatedData['icon'] ?? null,
+                'url' => $validatedPayload['url'] ?? null,
+                'icon' => $validatedPayload['icon'] ?? null,
             ]),
-            'parent_id' => $validatedData['parent_id'] ?? null,
+            'parent_id' => $validatedPayload['parent_id'] ?? null,
         ]);
     }
 
-    protected function rules(): array
+    public function rules(array $payload): array
     {
         return [
             'name' => 'required|string|max:255',

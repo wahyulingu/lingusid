@@ -12,8 +12,8 @@ class DeleteGroupAction extends Action
     {
     }
 
-    public function handle(Group $group): bool
+    protected function handler(array $validatedPayload, array $payload): bool
     {
-        return $this->groupRepository->delete($group->id);
+        return $this->groupRepository->delete($payload['group']->id);
     }
 }

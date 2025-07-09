@@ -6,27 +6,25 @@ use App\Actions\RulledAction;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
 
-class CreateMenuAction extends RulledAction
+class CreateMenuAction extends RulledAction implements \App\Contracts\Action\RuledActionContract
 {
     public function __construct(protected MenuRepository $menuRepository)
     {
     }
 
-    public function handle(array $data): Menu
+    protected function handler(array $validatedPayload, array $payload): Menu
     {
-        $validatedData = $this->validate($data);
-
         return $this->menuRepository->store([
-            'name' => $validatedData['name'],
-            'url' => $validatedData['url'] ?? null,
-            'icon' => $validatedData['icon'] ?? null,
-            'order' => $validatedData['order'] ?? 0,
-            'parent_id' => $validatedData['parent_id'] ?? null,
-            'group_id' => $validatedData['group_id'],
+            'name' => $validatedPayload['name'],
+            'url' => $validatedPayload['url'] ?? null,
+            'icon' => $validatedPayload['icon'] ?? null,
+            'order' => $validatedPayload['order'] ?? 0,
+            'parent_id' => $validatedPayload['parent_id'] ?? null,
+            'group_id' => $validatedPayload['group_id'],
         ]);
     }
 
-    protected function rules(): array
+    public function rules(array $payload): array
     {
         return [
             'name' => 'required|string|max:255',

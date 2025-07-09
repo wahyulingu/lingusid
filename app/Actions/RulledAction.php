@@ -10,21 +10,20 @@ abstract class RulledAction extends Action
 {
     use Dispatchable;
 
-    protected array $rules = [];
-
     protected array $messages = [];
 
     protected array $attributes = [];
 
     /**
      * Validate the given arguments.
+     *
      * @throws ValidationException
      */
     protected function validate(array $data): array
     {
         return Validator::make(
             $data,
-            $this->rules(),
+            $this->rules($data),
             $this->messages(),
             $this->attributes()
         )->validate();
@@ -33,9 +32,9 @@ abstract class RulledAction extends Action
     /**
      * Get the validation rules that apply to the action.
      */
-    protected function rules(): array
+    protected function rules(array $payload): array
     {
-        return $this->rules;
+        return [];
     }
 
     /**
