@@ -7,6 +7,15 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import SidebarMenuItemRecursive from './SidebarMenuItemRecursive.vue';
+
+interface Props {
+    menus?: Array<any>;
+}
+
+withDefaults(defineProps<Props>(), {
+    menus: () => [],
+});
 
 const mainNavItems: NavItem[] = [
     {
@@ -46,6 +55,9 @@ const footerNavItems: NavItem[] = [
 
         <SidebarContent>
             <NavMain :items="mainNavItems" />
+            <SidebarMenu v-if="menus.length">
+                <SidebarMenuItemRecursive :menus="menus" />
+            </SidebarMenu>
         </SidebarContent>
 
         <SidebarFooter>
