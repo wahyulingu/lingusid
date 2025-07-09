@@ -34,6 +34,10 @@ interface Menu {
     icon?: string;
     order: number;
     parent_id?: number;
+<<<<<<< HEAD
+=======
+    group_id: number;
+>>>>>>> feature/reusable-groups
     children?: Menu[];
 }
 
