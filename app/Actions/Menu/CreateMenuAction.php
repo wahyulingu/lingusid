@@ -8,9 +8,7 @@ use App\Repositories\MenuRepository;
 
 class CreateMenuAction extends RulledAction implements \App\Contracts\Action\RuledActionContract
 {
-    public function __construct(protected MenuRepository $menuRepository)
-    {
-    }
+    public function __construct(protected MenuRepository $menuRepository) {}
 
     protected function handler(array $validatedPayload, array $payload): Menu
     {
