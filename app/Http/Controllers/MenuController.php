@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -14,12 +14,12 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Category::where('type', 'menu')
+        $menus = Group::where('type', 'menu')
             ->whereNull('parent_id')
             ->with('children')
             ->orderBy('name')
             ->get()
-            ->map($this->transformMenu());
+            ->map($this->transformGroup());
 
         return Inertia::render('Menus/Index', [
             'menus' => $menus,
@@ -31,7 +31,7 @@ class MenuController extends Controller
      */
     public function create()
     {
-        $parentMenus = Category::where('type', 'menu')->whereNull('parent_id')->orderBy('name')->get();
+        $parentMenus = Group::where('type', 'menu')->whereNull('parent_id')->orderBy('name')->get();
 
         return Inertia::render('Menus/Create', [
             'parentMenus' => $parentMenus,
@@ -47,10 +47,10 @@ class MenuController extends Controller
             'name' => 'required|string|max:255',
             'url' => 'nullable|string|max:255',
             'icon' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:categories,id',
+            'parent_id' => 'nullable|exists:groups,id',
         ]);
 
-        Category::create([
+        Group::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'type' => 'menu',
@@ -65,30 +65,30 @@ class MenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $menu)
+    public function show(Group $menu)
     {
         $this->ensureIsMenu($menu);
         $menu->load('children', 'parent');
 
         return Inertia::render('Menus/Show', [
-            'menu' => $this->transformMenu()->__invoke($menu),
+            'menu' => $this->transformGroup()->__invoke($menu),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $menu)
+    public function edit(Group $menu)
     {
         $this->ensureIsMenu($menu);
-        $parentMenus = Category::where('type', 'menu')
+        $parentMenus = Group::where('type', 'menu')
             ->whereNull('parent_id')
             ->where('id', '!=', $menu->id)
             ->orderBy('name')
             ->get();
 
         return Inertia::render('Menus/Edit', [
-            'menu' => $this->transformMenu()->__invoke($menu),
+            'menu' => $this->transformGroup()->__invoke($menu),
             'parentMenus' => $parentMenus,
         ]);
     }
@@ -96,14 +96,14 @@ class MenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $menu)
+    public function update(Request $request, Group $menu)
     {
         $this->ensureIsMenu($menu);
         $request->validate([
             'name' => 'required|string|max:255',
             'url' => 'nullable|string|max:255',
             'icon' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:categories,id',
+            'parent_id' => 'nullable|exists:groups,id',
         ]);
 
         $menu->update([
@@ -120,7 +120,7 @@ class MenuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $menu)
+    public function destroy(Group $menu)
     {
         $this->ensureIsMenu($menu);
         $menu->delete();
@@ -130,29 +130,29 @@ class MenuController extends Controller
     }
 
     /**
-     * Abort if the category is not a menu.
+     * Abort if the group is not a menu.
      */
-    private function ensureIsMenu(Category $category)
+    private function ensureIsMenu(Group $group)
     {
-        if ($category->type !== 'menu') {
+        if ($group->type !== 'menu') {
             abort(404);
         }
     }
 
     /**
-     * Get a closure to transform menu category.
+     * Get a closure to transform menu group.
      */
-    private function transformMenu(): \Closure
+    private function transformGroup(): \Closure
     {
-        return function (Category $category) {
-            $data = json_decode($category->description, true);
-            $category->url = $data['url'] ?? null;
-            $category->icon = $data['icon'] ?? null;
-            if ($category->relationLoaded('children')) {
-                $category->children = $category->children->map($this->transformMenu());
+        return function (Group $group) {
+            $data = json_decode($group->description, true);
+            $group->url = $data['url'] ?? null;
+            $group->icon = $data['icon'] ?? null;
+            if ($group->relationLoaded('children')) {
+                $group->children = $group->children->map($this->transformGroup());
             }
 
-            return $category;
+            return $group;
         };
     }
 }

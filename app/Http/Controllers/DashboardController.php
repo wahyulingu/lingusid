@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -10,12 +10,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $sidebarMenus = Category::where('type', 'menu')
+        $sidebarMenus = Group::where('type', 'menu')
                             ->whereNull('parent_id')
                             ->with('children')
                             ->orderBy('name')
                             ->get()
-                            ->map($this->transformMenu());
+                            ->map($this->transformGroup());
 
         return Inertia::render('Dashboard', [
             'sidebarMenus' => $sidebarMenus,
@@ -23,19 +23,19 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get a closure to transform menu category.
+     * Get a closure to transform menu group.
      */
-    private function transformMenu(): \Closure
+    private function transformGroup(): \Closure
     {
-        return function (Category $category) {
-            $data = json_decode($category->description, true);
-            $category->url = $data['url'] ?? null;
-            $category->icon = $data['icon'] ?? null;
-            if ($category->relationLoaded('children')) {
-                $category->children = $category->children->map($this->transformMenu());
+        return function (Group $group) {
+            $data = json_decode($group->description, true);
+            $group->url = $data['url'] ?? null;
+            $group->icon = $data['icon'] ?? null;
+            if ($group->relationLoaded('children')) {
+                $group->children = $group->children->map($this->transformGroup());
             }
 
-            return $category;
+            return $group;
         };
     }
 }

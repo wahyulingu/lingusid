@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class Group extends Model
 {
     protected $fillable = [
         'name',
@@ -17,18 +17,18 @@ class Category extends Model
     ];
 
     /**
-     * Get the parent category.
+     * Get the parent group.
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsTo(Group::class, 'parent_id');
     }
 
     /**
-     * Get the children categories.
+     * Get the children groups.
      */
     public function children(): HasMany
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(Group::class, 'parent_id');
     }
 }
