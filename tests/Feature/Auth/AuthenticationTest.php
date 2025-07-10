@@ -14,6 +14,12 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->get('/login');
 
+        if ($response->getStatusCode() !== 200) {
+            echo "
+Response Content:
+" . $response->getContent();
+        }
+
         $response->assertStatus(200);
     }
 

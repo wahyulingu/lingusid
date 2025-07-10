@@ -2,11 +2,11 @@
 
 namespace App\Actions\Menu;
 
-use App\Actions\Action;
+use App\Actions\BaseAction;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
 
-class DeleteMenuAction extends Action
+class DeleteMenuAction extends \App\Actions\BaseAction
 {
     public function __construct(protected MenuRepository $menuRepository)
     {

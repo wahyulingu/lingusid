@@ -2,12 +2,12 @@
 
 namespace App\Actions\Group;
 
-use App\Actions\RulledAction;
+use App\Actions\RuledAction;
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 use Illuminate\Support\Str;
 
-class UpdateGroupAction extends RulledAction implements \App\Contracts\Action\RuledActionContract
+class UpdateGroupAction extends \App\Actions\RuledAction implements \App\Contracts\Action\RuledActionContract
 {
     public function __construct(protected GroupRepository $groupRepository)
     {

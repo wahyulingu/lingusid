@@ -2,11 +2,11 @@
 
 namespace App\Actions\Group;
 
-use App\Actions\Action;
+use App\Actions\BaseAction;
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 
-class DeleteGroupAction extends Action
+class DeleteGroupAction extends \App\Actions\BaseAction
 {
     public function __construct(protected GroupRepository $groupRepository)
     {

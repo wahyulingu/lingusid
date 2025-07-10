@@ -7,3 +7,7 @@
 - The method used for operations inside an action should be `handler()` not `handle()`.
 - Traits should be stored in `App/Abstractions/Traits/[context]/[TraitName]Trait.php`.
 - All `Action`, `Contract`, `Service`, `Model`, `Helper`, and `Enum` files must follow the naming convention: `[Context]/FileName[Type].php` (e.g., `App/Actions/User/CreateUserAction.php`, `App/Contracts/Action/InvokeableActionContract.php`, `App/Models/User.php`, `App/Enums/UserRoleEnum.php`).
+- **Testing Guidelines:**
+    - For PHPUnit, always include `use PHPUnit\Framework\Attributes\Test;` at the top of your test files. Use the `#[Test]` attribute and name methods descriptively (e.g., `test_feature_behavior`) instead of using `it_` prefixes.
+    - When testing, focus on running only relevant tests. Avoid running the entire test suite, especially after an error.
+    - Apply fixes carefully, limiting changes to the immediate context of the feature to prevent unintended side effects.

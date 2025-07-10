@@ -2,11 +2,11 @@
 
 namespace App\Actions\Menu;
 
-use App\Actions\RulledAction;
+use App\Actions\RuledAction;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
 
-class UpdateMenuAction extends RulledAction implements \App\Contracts\Action\RuledActionContract
+class UpdateMenuAction extends \App\Actions\RuledAction implements \App\Contracts\Action\RuledActionContract
 {
     public function __construct(protected MenuRepository $menuRepository)
     {
@@ -22,10 +22,11 @@ class UpdateMenuAction extends RulledAction implements \App\Contracts\Action\Rul
             'icon' => $validatedPayload['icon'] ?? null,
             'order' => $validatedPayload['order'] ?? 0,
             'parent_id' => $validatedPayload['parent_id'] ?? null,
-            'group_id' => $validatedPayload['group_id'],
+            'type' => $validatedPayload['type'] ?? 'main',
+            'slug' => \Illuminate\Support\Str::slug($validatedPayload['name']),
         ]);
 
-        return $menu->fresh();
+        return $this->menuRepository->find($menu->id);
     }
 
     public function rules(array $payload): array
@@ -36,7 +37,8 @@ class UpdateMenuAction extends RulledAction implements \App\Contracts\Action\Rul
             'icon' => 'nullable|string|max:255',
             'order' => 'nullable|integer',
             'parent_id' => 'nullable|exists:menus,id',
-            'group_id' => 'required|exists:groups,id',
+            'type' => 'required|string|in:main,footer',
+            
         ];
     }
 }

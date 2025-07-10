@@ -157,6 +157,7 @@ const rightNavItems: NavItem[] = [
                     <DropdownMenu>
                         <DropdownMenuTrigger :as-child="true">
                             <Button
+                                v-if="auth.user"
                                 variant="ghost"
                                 size="icon"
                                 class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary"
@@ -169,7 +170,7 @@ const rightNavItems: NavItem[] = [
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" class="w-56">
+                        <DropdownMenuContent v-if="auth.user" align="end" class="w-56">
                             <UserMenuContent :user="auth.user" />
                         </DropdownMenuContent>
                     </DropdownMenu>

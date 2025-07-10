@@ -2,26 +2,14 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use App\Models\Menu;
-=======
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 use App\Repositories\MenuRepository;
->>>>>>> feature/reusable-groups
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-<<<<<<< HEAD
-    public function index()
-    {
-        $sidebarMenus = Menu::whereNull('parent_id')
-                            ->with('children')
-                            ->orderBy('order')
-                            ->get();
-=======
     protected Group $mainNavigationGroup;
 
     public function __construct(
@@ -52,14 +40,9 @@ class DashboardController extends Controller
             orderBy: 'order',
             orderDirection: 'asc'
         );
->>>>>>> feature/reusable-groups
 
         return Inertia::render('Dashboard', [
             'sidebarMenus' => $sidebarMenus,
         ]);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/reusable-groups
