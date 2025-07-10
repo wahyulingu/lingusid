@@ -3,7 +3,6 @@
 namespace App\Actions\User;
 
 use App\Actions\BaseAction;
-use App\Models\User;
 
 class UpdateUserAction extends BaseAction
 {

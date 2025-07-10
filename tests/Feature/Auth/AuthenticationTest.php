@@ -14,12 +14,6 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->get('/login');
 
-        if ($response->getStatusCode() !== 200) {
-            echo '
-Response Content:
-'.$response->getContent();
-        }
-
         $response->assertStatus(200);
     }
 
@@ -32,9 +26,6 @@ Response Content:
             'password' => 'password',
             '_token' => csrf_token(),
         ]);
-
-        $response->dumpSession();
-        $response->dumpHeaders();
 
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
@@ -59,9 +50,6 @@ Response Content:
         $response = $this->actingAs($user)->post('/logout', [
             '_token' => csrf_token(),
         ]);
-
-        $response->dumpSession();
-        $response->dumpHeaders();
 
         $this->assertGuest();
         $response->assertRedirect('/');
