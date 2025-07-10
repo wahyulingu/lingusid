@@ -10,7 +10,7 @@ class UpdateUserAction extends BaseAction
     {
         $user = $payload['user'];
 
-        $user->fill($validatedPayload);
+        $user->fill($payload);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;

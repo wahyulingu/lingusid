@@ -30,7 +30,6 @@ class ProfileUpdateTest extends TestCase
             ->patch('/settings/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
-                '_token' => csrf_token(),
             ]);
 
         $response

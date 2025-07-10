@@ -13,6 +13,6 @@ class CreateUserAction extends BaseAction
 
     protected function handler(array $validatedPayload, array $payload): mixed
     {
-        return $this->userRepository->store($validatedPayload);
+        return $this->userRepository->store($payload);
     }
 }
