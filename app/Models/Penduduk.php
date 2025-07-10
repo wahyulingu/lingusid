@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Penduduk extends Model
 {
-    use Sluggable;
     use LogsActivity;
+    use Sluggable;
+
+    protected $table = 'penduduk';
 
     protected $fillable = [
         'nik',
@@ -25,15 +27,13 @@ class Penduduk extends Model
 
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'nama_lengkap'
-            ]
+                'source' => 'nama_lengkap',
+            ],
         ];
     }
 

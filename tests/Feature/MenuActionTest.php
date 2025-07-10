@@ -7,8 +7,8 @@ use App\Actions\Menu\DeleteMenuAction;
 use App\Actions\Menu\UpdateMenuAction;
 use App\Models\Menu;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class MenuActionTest extends TestCase
 {

@@ -2,7 +2,6 @@
 
 namespace App\Actions\Menu;
 
-use App\Actions\RuledAction;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
 
@@ -18,7 +17,7 @@ class CreateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'icon' => $validatedPayload['icon'] ?? null,
             'order' => $validatedPayload['order'] ?? 0,
             'parent_id' => $validatedPayload['parent_id'] ?? null,
-            
+
         ]);
     }
 
@@ -30,7 +29,7 @@ class CreateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'icon' => 'nullable|string|max:255',
             'order' => 'nullable|integer',
             'parent_id' => 'nullable|exists:menus,id',
-            
+
         ];
     }
 }

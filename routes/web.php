@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\Web\MenuController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,7 +12,7 @@ Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index
 
 Route::resource('penduduk', App\Http\Controllers\PendudukController::class)->middleware(['auth', 'verified']);
 
-Route::resource('menus', App\Http\Controllers\MenuController::class)->middleware(['auth', 'verified']);
+Route::resource('menus', MenuController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

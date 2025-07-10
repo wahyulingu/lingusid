@@ -6,6 +6,7 @@ use App\Actions\Menu\DeleteMenuAction;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DeleteMenuActionTest extends TestCase
@@ -18,7 +19,7 @@ class DeleteMenuActionTest extends TestCase
         $this->app->instance(MenuRepository::class, $this->createMock(MenuRepository::class));
     }
 
-    #[test]
+    #[Test]
     public function test_deletes_a_menu(): void
     {
         $menu = Menu::factory()->make();

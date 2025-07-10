@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Menu;
-use App\Models\Group;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MenuFactory extends Factory
@@ -18,7 +17,7 @@ class MenuFactory extends Factory
             'icon' => $this->faker->word(),
             'order' => $this->faker->numberBetween(0, 100),
             'parent_id' => null,
-            
+
         ];
     }
 

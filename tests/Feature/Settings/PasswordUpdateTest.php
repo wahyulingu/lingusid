@@ -17,11 +17,11 @@ class PasswordUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->from('/settings/password')
             ->put('/settings/password', [
                 'current_password' => 'password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
+                '_token' => csrf_token(),
             ]);
 
         $response

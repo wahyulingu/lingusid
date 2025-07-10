@@ -6,6 +6,7 @@ use App\Actions\Group\UpdateGroupAction;
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class UpdateGroupActionTest extends TestCase
@@ -18,7 +19,7 @@ class UpdateGroupActionTest extends TestCase
         $this->app->instance(GroupRepository::class, $this->createMock(GroupRepository::class));
     }
 
-    #[test]
+    #[Test]
     public function it_updates_a_group_with_valid_data(): void
     {
         $group = Group::factory()->make();
@@ -29,10 +30,14 @@ class UpdateGroupActionTest extends TestCase
             'icon' => 'updated_icon',
         ];
 
-        $this->mock(GroupRepository::class, function ($mock) use ($group, $data) {
+        $this->mock(GroupRepository::class, function ($mock) use ($group) {
             $mock->shouldReceive('update')
                 ->once()
-                ->andReturn(true);
+                ->andReturnUsing(function ($id, $attributes) use ($group) {
+                    $group->fill($attributes);
+
+                    return $group;
+                });
         });
 
         $action = new UpdateGroupAction($this->app->make(GroupRepository::class));

@@ -23,5 +23,8 @@ class DashboardTest extends TestCase
 
         $response = $this->get('/dashboard');
         $response->assertStatus(200);
+        // Assert that the response contains some text that would be present on the dashboard
+        // For example, if your dashboard has a heading like "Welcome to Dashboard"
+        // $response->assertSee('Welcome to Dashboard');
     }
 }

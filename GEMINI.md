@@ -13,3 +13,11 @@
     - For PHPUnit, always include `use PHPUnit\Framework\Attributes\Test;` at the top of your test files. Use the `#[Test]` attribute and name methods descriptively (e.g., `test_feature_behavior`) instead of using `it_` prefixes.
     - When testing, focus on running only relevant tests. Avoid running the entire test suite, especially after an error.
     - Apply fixes carefully, limiting changes to the immediate context of the feature to prevent unintended side effects.
+- Do not run tests unless explicitly asked, as it slows down the development process.
+
+## Architectural Rules
+
+- **Repository Layer:** Only the repository layer is permitted to interact directly with Eloquent ORM for data access.
+- **Service Layer:** Services are designated for integrating with third-party APIs or encapsulating complex, domain-specific business logic that doesn't fit elsewhere.
+- **Action Layer:** Actions are responsible for orchestrating business logic. They can access Repositories and Services to perform their tasks. Actions should only contain pure CRUD and business logic, without authentication or authorization concerns.
+- **Controller Layer:** Controllers must be kept as lean as possible. Their sole responsibility is to handle HTTP requests and delegate the execution of business logic to the Action layer. Controllers are not permitted to access Services directly. Authentication and authorization logic should be handled at the Controller layer.

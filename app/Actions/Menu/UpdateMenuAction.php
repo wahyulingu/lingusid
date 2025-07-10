@@ -2,21 +2,18 @@
 
 namespace App\Actions\Menu;
 
-use App\Actions\RuledAction;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
 
 class UpdateMenuAction extends \App\Actions\RuledAction implements \App\Contracts\Action\RuledActionContract
 {
-    public function __construct(protected MenuRepository $menuRepository)
-    {
-    }
+    public function __construct(protected MenuRepository $menuRepository) {}
 
     protected function handler(array $validatedPayload, array $payload): Menu
     {
         $menu = $payload['menu'];
 
-        $this->menuRepository->update($menu->id, [
+        return $this->menuRepository->update($menu->id, [
             'name' => $validatedPayload['name'],
             'url' => $validatedPayload['url'] ?? null,
             'icon' => $validatedPayload['icon'] ?? null,
@@ -25,8 +22,6 @@ class UpdateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'type' => $validatedPayload['type'] ?? 'main',
             'slug' => \Illuminate\Support\Str::slug($validatedPayload['name']),
         ]);
-
-        return $this->menuRepository->find($menu->id);
     }
 
     public function rules(array $payload): array
@@ -38,7 +33,7 @@ class UpdateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'order' => 'nullable|integer',
             'parent_id' => 'nullable|exists:menus,id',
             'type' => 'required|string|in:main,footer',
-            
+
         ];
     }
 }

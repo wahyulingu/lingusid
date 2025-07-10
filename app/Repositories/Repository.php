@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -137,11 +136,16 @@ abstract class Repository
         return $this->model()::create($attributes);
     }
 
-    public function update($key, array $attributes): bool
+    public function update($key, array $attributes): Model
     {
         $model = $this->model()::find($key);
 
-        return $model ? $model->update($attributes) : false;
+        if ($model) {
+            $model->update($attributes);
+            return $model;
+        }
+
+        return null;
     }
 
     public function delete($key): bool
@@ -183,7 +187,9 @@ abstract class Repository
                         }
                     }
                 }
-            } else {
+            } elseif (is_scalar($filterValue)) {
+                $builder->where($filterKey, $filterValue);
+            } elseif ($filterValue instanceof Model) {
                 $builder->whereHas($filterKey, fn ($q) => $q->where(
                     $filterValue->getKeyName(),
                     $filterValue->getKey()

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('order')->default(0);
             $table->foreignId('parent_id')->nullable()->constrained('menus')->onDelete('cascade');
             $table->string('type')->default('main');
-            
+
             $table->timestamps();
         });
     }

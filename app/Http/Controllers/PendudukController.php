@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Penduduk\CreatePendudukAction;
+use App\Actions\Penduduk\DeletePendudukAction;
+use App\Actions\Penduduk\UpdatePendudukAction;
 use App\Models\Penduduk;
+use App\Repositories\PendudukRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,9 +15,10 @@ class PendudukController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(PendudukRepository $pendudukRepository)
     {
-        $penduduk = Penduduk::all();
+        $penduduk = $pendudukRepository->all();
+
         return Inertia::render('Penduduk/Index', [
             'penduduk' => $penduduk,
         ]);
@@ -30,15 +35,15 @@ class PendudukController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, CreatePendudukAction $createPendudukAction)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'nik' => 'required|unique:penduduk|max:255',
             'nama_lengkap' => 'required|max:255',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
         ]);
 
-        Penduduk::create($request->all());
+        $createPendudukAction->handle($validatedData);
 
         return redirect()->route('penduduk.index')
             ->with('message', 'Data penduduk berhasil ditambahkan.');
@@ -67,15 +72,15 @@ class PendudukController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Penduduk $penduduk)
+    public function update(Request $request, Penduduk $penduduk, UpdatePendudukAction $updatePendudukAction)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'nik' => 'required|unique:penduduk,nik,' . $penduduk->id . ',id|max:255',
             'nama_lengkap' => 'required|max:255',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
         ]);
 
-        $penduduk->update($request->all());
+        $updatePendudukAction->handle($penduduk, $validatedData);
 
         return redirect()->route('penduduk.index')
             ->with('message', 'Data penduduk berhasil diperbarui.');
@@ -84,11 +89,12 @@ class PendudukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Penduduk $penduduk)
+    public function destroy(Penduduk $penduduk, DeletePendudukAction $deletePendudukAction)
     {
-        $penduduk->delete();
+        $deletePendudukAction->handle($penduduk);
 
         return redirect()->route('penduduk.index')
             ->with('message', 'Data penduduk berhasil dihapus.');
     }
 }
+

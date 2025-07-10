@@ -6,6 +6,7 @@ use App\Actions\Group\CreateGroupAction;
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CreateGroupActionTest extends TestCase
@@ -18,7 +19,7 @@ class CreateGroupActionTest extends TestCase
         $this->app->instance(GroupRepository::class, $this->createMock(GroupRepository::class));
     }
 
-    #[test]
+    #[Test]
     public function it_creates_a_group_with_valid_data(): void
     {
         $data = [

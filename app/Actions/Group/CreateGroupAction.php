@@ -2,7 +2,6 @@
 
 namespace App\Actions\Group;
 
-use App\Actions\RuledAction;
 use App\Contracts\Action\RuledActionContract;
 use App\Models\Group;
 use App\Repositories\GroupRepository;

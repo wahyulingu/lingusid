@@ -2,22 +2,19 @@
 
 namespace App\Actions\Group;
 
-use App\Actions\RuledAction;
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 use Illuminate\Support\Str;
 
 class UpdateGroupAction extends \App\Actions\RuledAction implements \App\Contracts\Action\RuledActionContract
 {
-    public function __construct(protected GroupRepository $groupRepository)
-    {
-    }
+    public function __construct(protected GroupRepository $groupRepository) {}
 
     protected function handler(array $validatedPayload, array $payload): Group
     {
         $group = $payload['group'];
 
-        $this->groupRepository->update($group->id, [
+        return $this->groupRepository->update($group->id, [
             'name' => $validatedPayload['name'],
             'slug' => Str::slug($validatedPayload['name']),
             'type' => $validatedPayload['type'],
@@ -27,8 +24,6 @@ class UpdateGroupAction extends \App\Actions\RuledAction implements \App\Contrac
             ]),
             'parent_id' => $validatedPayload['parent_id'] ?? null,
         ]);
-
-        return $group->fresh();
     }
 
     public function rules(array $payload): array
