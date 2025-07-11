@@ -15,6 +15,11 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Dashboard main page
+    Route::get('/dashboard', function () {
+        return Inertia::render('dashboard/Dashboard');
+    })->name('dashboard');
+
     // SID routes
     Route::prefix('dashboard/sid')->name('dashboard.sid.')->group(function () {
         Route::resource('penduduk', PendudukController::class);

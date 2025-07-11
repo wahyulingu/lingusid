@@ -11,7 +11,23 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
+    resolve: (name) => {
+        const pages = import.meta.glob<DefineComponent>('./pages/**/*.vue');
+        let path = `./pages/${name}.vue`;
+        if (!pages[path]) {
+            path = `./pages/dashboard/${name}.vue`;
+        }
+        if (!pages[path]) {
+            path = `./pages/dashboard/web/${name}.vue`;
+        }
+        if (!pages[path]) {
+            path = `./pages/dashboard/sid/${name}.vue`;
+        }
+        if (!pages[path]) {
+            path = `./pages/public/${name}.vue`;
+        }
+        return pages[path]();
+    },
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
