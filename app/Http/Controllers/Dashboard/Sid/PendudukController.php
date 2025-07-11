@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard\Sid;
 
 use App\Actions\Penduduk\CreatePendudukAction;
 use App\Actions\Penduduk\DeletePendudukAction;

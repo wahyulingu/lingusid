@@ -15,8 +15,10 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Penduduk routes
-    Route::resource('penduduk', PendudukController::class);
+    // SID routes
+    Route::prefix('dashboard/sid')->name('dashboard.sid.')->group(function () {
+        Route::resource('penduduk', PendudukController::class);
+    });
 
     // Dashboard Web routes
     Route::prefix('dashboard/web')->name('dashboard.web.')->group(function () {
