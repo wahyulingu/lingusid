@@ -1,14 +1,14 @@
 <?php
 
+use App\Http\Controllers\Dashboard\Sid\PendudukController;
 use App\Http\Controllers\Dashboard\Web\MenuController;
-use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Public routes
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    return Inertia::render('Public/Welcome');
 })->name('home');
 
 // Authenticated and verified routes
@@ -17,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard main page
     Route::get('/dashboard', function () {
-        return Inertia::render('dashboard/Dashboard');
+        return Inertia::render('Dashboard/Dashboard');
     })->name('dashboard');
 
     // SID routes

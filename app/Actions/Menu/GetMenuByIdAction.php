@@ -7,12 +7,10 @@ use App\Repositories\MenuRepository;
 
 class GetMenuByIdAction extends BaseAction
 {
-    public function __construct(private MenuRepository $menuRepository)
-    {
-    }
+    public function __construct(private MenuRepository $menuRepository) {}
 
-    public function handler(string $id)
+    public function handler(array $validatedPayload, array $payload): mixed
     {
-        return $this->menuRepository->find($id);
+        return $this->menuRepository->find($payload['id']);
     }
 }

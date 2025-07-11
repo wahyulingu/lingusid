@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Sid;
 use App\Actions\Penduduk\CreatePendudukAction;
 use App\Actions\Penduduk\DeletePendudukAction;
 use App\Actions\Penduduk\UpdatePendudukAction;
+use App\Http\Controllers\Controller;
 use App\Models\Penduduk;
 use App\Repositories\PendudukRepository;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class PendudukController extends Controller
     {
         $penduduk = $pendudukRepository->all();
 
-        return Inertia::render('Penduduk/Index', [
+        return Inertia::render('Dashboard/Sid/Penduduk/Index', [
             'penduduk' => $penduduk,
         ]);
     }
@@ -29,7 +30,7 @@ class PendudukController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Penduduk/Create');
+        return Inertia::render('Dashboard/Sid/Penduduk/Create');
     }
 
     /**
@@ -54,7 +55,7 @@ class PendudukController extends Controller
      */
     public function show(Penduduk $penduduk)
     {
-        return Inertia::render('Penduduk/Show', [
+        return Inertia::render('Dashboard/Sid/Penduduk/Show', [
             'penduduk' => $penduduk,
         ]);
     }
@@ -64,7 +65,7 @@ class PendudukController extends Controller
      */
     public function edit(Penduduk $penduduk)
     {
-        return Inertia::render('Penduduk/Edit', [
+        return Inertia::render('Dashboard/Sid/Penduduk/Edit', [
             'penduduk' => $penduduk,
         ]);
     }
@@ -75,7 +76,7 @@ class PendudukController extends Controller
     public function update(Request $request, Penduduk $penduduk, UpdatePendudukAction $updatePendudukAction)
     {
         $validatedData = $request->validate([
-            'nik' => 'required|unique:penduduk,nik,' . $penduduk->id . ',id|max:255',
+            'nik' => 'required|unique:penduduk,nik,'.$penduduk->id.',id|max:255',
             'nama_lengkap' => 'required|max:255',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
         ]);
@@ -97,4 +98,3 @@ class PendudukController extends Controller
             ->with('message', 'Data penduduk berhasil dihapus.');
     }
 }
-

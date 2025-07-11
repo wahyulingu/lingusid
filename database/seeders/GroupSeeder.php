@@ -12,6 +12,9 @@ class GroupSeeder extends Seeder
      */
     public function run(): void
     {
-        Group::factory()->count(5)->create();
+        Group::factory()->create([
+            'name' => 'Super Admin',
+        ]);
+        Group::factory()->count(4)->create();
     }
 }

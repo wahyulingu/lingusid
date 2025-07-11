@@ -13,10 +13,22 @@ class MenuSeeder extends Seeder
      */
     public function run(): void
     {
-        $groups = Group::factory()->count(3)->create();
+        $superAdminGroup = Group::where('name', 'Super Admin')->first();
 
-        Menu::factory()->count(10)->create()->each(function ($menu) use ($groups) {
-            $menu->groups()->attach($groups->random(1));
-        });
+        $webMenu = Menu::factory()->create([
+            'name' => 'Web',
+            'url' => '#',
+            'type' => 'main',
+        ]);
+
+        $menuSubMenu = Menu::factory()->create([
+            'name' => 'Menu',
+            'url' => route('dashboard.web.menu.index'),
+            'parent_id' => $webMenu->id,
+            'type' => 'sub',
+        ]);
+
+        $webMenu->groups()->attach($superAdminGroup);
+        $menuSubMenu->groups()->attach($superAdminGroup);
     }
 }
