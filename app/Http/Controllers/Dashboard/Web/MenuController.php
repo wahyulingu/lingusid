@@ -6,6 +6,8 @@ use App\Actions\Menu\CreateMenuAction;
 use App\Actions\Menu\DeleteMenuAction;
 use App\Actions\Menu\GetMainNavigationGroupAction;
 use App\Actions\Menu\UpdateMenuAction;
+use App\Actions\Menu\GetMenusAction;
+use App\Actions\Menu\GetMenuByIdAction;
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
@@ -72,8 +74,9 @@ class MenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Menu $menu)
+    public function show(string $id, GetMenuByIdAction $getMenuByIdAction)
     {
+        $menu = $getMenuByIdAction->handler($id);
         $this->ensureIsMainNavigationMenu($menu);
         $menu->load('children', 'parent');
 

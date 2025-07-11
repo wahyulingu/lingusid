@@ -21,3 +21,4 @@
 - **Service Layer:** Services are designated for integrating with third-party APIs or encapsulating complex, domain-specific business logic that doesn't fit elsewhere.
 - **Action Layer:** Actions are responsible for orchestrating business logic. They can access Repositories and Services to perform their tasks. Actions should only contain pure CRUD and business logic, without authentication or authorization concerns.
 - **Controller Layer:** Controllers must be kept as lean as possible. Their sole responsibility is to handle HTTP requests and delegate the execution of business logic to the Action layer. Controllers are not permitted to access Services directly. Authentication and authorization logic should be handled at the Controller layer.
+Do not modify Laravel's built-in code or vendor code without confirmation.
