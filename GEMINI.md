@@ -23,4 +23,4 @@
 - **Controller Layer:** Controllers must be kept as lean as possible. Their sole responsibility is to handle HTTP requests and delegate the execution of business logic to the Action layer. Controllers are not permitted to access Services directly. Authentication and authorization logic should be handled at the Controller layer.
 Do not modify Laravel's built-in code or vendor code without confirmation.
 - **Routing:** Group routes by prefix and middleware. Prioritize `Route::resource` and ensure clear naming conventions.
-- **Frontend Structure:** Apply context-based directory structuring (similar to backend layers like Actions, Repositories) to frontend components and files.
+- **Frontend Structure:** Apply context-based directory structuring (similar to backend layers like Actions, Repositories) to frontend components and files. The `resources/js/pages/Dashboard.vue` component serves as the reference for creating new page components.
