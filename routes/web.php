@@ -12,7 +12,7 @@ Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index
 
 Route::resource('penduduk', App\Http\Controllers\PendudukController::class)->middleware(['auth', 'verified']);
 
-Route::resource('menus', MenuController::class)->middleware(['auth', 'verified']);
+Route::resource('dashboard/web/menu', MenuController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
