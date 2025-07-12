@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers\Dashboard\Sid;
 
-use App\Actions\Penduduk\CreatePendudukAction;
-use App\Actions\Penduduk\DeletePendudukAction;
-use App\Actions\Penduduk\UpdatePendudukAction;
+use App\Actions\Resident\CreateResidentAction;
+use App\Actions\Resident\DeleteResidentAction;
+use App\Actions\Resident\UpdateResidentAction;
 use App\Http\Controllers\Controller;
-use App\Models\Penduduk;
-use App\Repositories\PendudukRepository;
+use App\Models\Resident;
+use App\Repositories\ResidentRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class PendudukController extends Controller
+class ResidentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(PendudukRepository $pendudukRepository)
+    public function index(ResidentRepository $residentRepository)
     {
-        $penduduk = $pendudukRepository->all();
+        $resident = $residentRepository->all();
 
-        return Inertia::render('Dashboard/Sid/Penduduk/Index', [
-            'penduduk' => $penduduk,
+        return Inertia::render('Dashboard/Sid/Resident/Index', [
+            'resident' => $resident,
         ]);
     }
 
@@ -30,71 +30,71 @@ class PendudukController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Dashboard/Sid/Penduduk/Create');
+        return Inertia::render('Dashboard/Sid/Resident/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, CreatePendudukAction $createPendudukAction)
+    public function store(Request $request, CreateResidentAction $createResidentAction)
     {
         $validatedData = $request->validate([
-            'nik' => 'required|unique:penduduk|max:255',
+            'nik' => 'required|unique:residents|max:255',
             'nama_lengkap' => 'required|max:255',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
         ]);
 
-        $createPendudukAction->handle($validatedData);
+        $createResidentAction->handle($validatedData);
 
-        return redirect()->route('penduduk.index')
-            ->with('message', 'Data penduduk berhasil ditambahkan.');
+        return redirect()->route('resident.index')
+            ->with('message', 'Resident data added successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Penduduk $penduduk)
+    public function show(Resident $resident)
     {
-        return Inertia::render('Dashboard/Sid/Penduduk/Show', [
-            'penduduk' => $penduduk,
+        return Inertia::render('Dashboard/Sid/Resident/Show', [
+            'resident' => $resident,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Penduduk $penduduk)
+    public function edit(Resident $resident)
     {
-        return Inertia::render('Dashboard/Sid/Penduduk/Edit', [
-            'penduduk' => $penduduk,
+        return Inertia::render('Dashboard/Sid/Resident/Edit', [
+            'resident' => $resident,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Penduduk $penduduk, UpdatePendudukAction $updatePendudukAction)
+    public function update(Request $request, Resident $resident, UpdateResidentAction $updateResidentAction)
     {
         $validatedData = $request->validate([
-            'nik' => 'required|unique:penduduk,nik,'.$penduduk->id.',id|max:255',
+            'nik' => 'required|unique:residents,nik,'.$resident->id.',id|max:255',
             'nama_lengkap' => 'required|max:255',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
         ]);
 
-        $updatePendudukAction->handle($penduduk, $validatedData);
+        $updateResidentAction->handle($resident, $validatedData);
 
-        return redirect()->route('penduduk.index')
-            ->with('message', 'Data penduduk berhasil diperbarui.');
+        return redirect()->route('resident.index')
+            ->with('message', 'Resident data updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Penduduk $penduduk, DeletePendudukAction $deletePendudukAction)
+    public function destroy(Resident $resident, DeleteResidentAction $deleteResidentAction)
     {
-        $deletePendudukAction->handle($penduduk);
+        $deleteResidentAction->handle($resident);
 
-        return redirect()->route('penduduk.index')
-            ->with('message', 'Data penduduk berhasil dihapus.');
+        return redirect()->route('resident.index')
+            ->with('message', 'Resident data deleted successfully.');
     }
 }

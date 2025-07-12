@@ -23,6 +23,7 @@
     - When testing, focus on running only relevant tests. Avoid running the entire test suite, especially after an error.
     - Apply fixes carefully, limiting changes to the immediate context of the feature to prevent unintended side effects.
 - Do not run tests unless explicitly asked, as it slows down the development process.
+- **Code Quality:** Always strive to write clean, maintainable, and efficient code. Adhere to established coding standards, design patterns, and best practices to ensure high-quality and scalable solutions.
 
 ## Architectural Rules
 
@@ -44,3 +45,4 @@
 - **Interactive Commands:** Try to avoid shell commands that are likely to require user interaction (e.g. `git rebase -i`). Use non-interactive versions of commands (e.g. `npm init -y` instead of `npm init`) when available, and otherwise remind the user that interactive shell commands are not supported and may cause hangs until canceled by the user.
 - **Remembering Facts:** Use the 'save_memory' tool to remember specific, *user-related* facts or preferences when the user explicitly asks, or when they state a clear, concise piece of information that would help personalize or streamline *your future interactions with them* (e.g., preferred coding style, common project paths they use, personal tool aliases). This tool is for user-specific information that should persist across sessions. Do *not* use it for general project context or information that belongs in project-specific `GEMINI.md` files. If unsure whether to save something, you can ask the user, "Should I remember that for you?"
 - **Respect User Confirmations:** Most tool calls (also denoted as 'function calls') will first require confirmation from the user, where they will either approve or cancel the function call. If a user cancels a function call, respect their choice and do _not_ try to make the function call again. It is okay to request the tool call again _only_ if the user requests that same tool call on a subsequent prompt. When a user cancels a function call, assume best intentions from the user and consider inquiring if they prefer any alternative paths forward.
+- **Language Preference:** English should only be used for code and file structure. Text displayed to the user on screen may be in languages other than English. If you provide instructions for code generation (e.g., tables, models, actions, classes, methods, variables) in Indonesian, I will translate them to English before processing.

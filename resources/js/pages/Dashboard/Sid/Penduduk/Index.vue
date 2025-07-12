@@ -4,7 +4,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 interface Props {
-    penduduk: Array<any>;
+    resident: Array<any>;
     sidebarMenus: Array<any>;
 }
 
@@ -16,34 +16,34 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
     {
-        title: 'Penduduk',
-        href: route('dashboard.sid.penduduk.index'),
+        title: 'Resident',
+        href: route('dashboard.sid.resident.index'),
     },
 ];
 
 const form = useForm({});
 
-const deletePenduduk = (id: string) => {
-    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-        form.delete(route('dashboard.sid.penduduk.destroy', id));
+const deleteResident = (id: string) => {
+    if (confirm('Are you sure you want to delete this data?')) {
+        form.delete(route('dashboard.sid.resident.destroy', id));
     }
 };
 </script>
 
 <template>
-    <Head title="Penduduk" />
+    <Head title="Resident" />
 
     <AppLayout :breadcrumbs="breadcrumbs" :sidebar-menus="props.sidebarMenus">
         <div>
-            <h1>Daftar Penduduk</h1>
-            <p>Ini adalah halaman daftar penduduk.</p>
-            <Link :href="route('dashboard.sid.penduduk.create')">Tambah Penduduk</Link>
+            <h1>Resident List</h1>
+            <p>This is the resident list page.</p>
+            <Link :href="route('dashboard.sid.resident.create')">Add Resident</Link>
             <ul>
-                <li v-for="p in props.penduduk" :key="p.id">
+                <li v-for="p in props.resident" :key="p.id">
                     {{ p.nama_lengkap }} ({{ p.nik }})
-                    <Link :href="route('dashboard.sid.penduduk.show', p.id)">Lihat</Link>
-                    <Link :href="route('dashboard.sid.penduduk.edit', p.id)">Edit</Link>
-                    <button @click="deletePenduduk(p.id)">Hapus</button>
+                    <Link :href="route('dashboard.sid.resident.show', p.id)">View</Link>
+                    <Link :href="route('dashboard.sid.resident.edit', p.id)">Edit</Link>
+                    <button @click="deleteResident(p.id)">Delete</button>
                 </li>
             </ul>
         </div>

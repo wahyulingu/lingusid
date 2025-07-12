@@ -4,7 +4,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
 
 interface Props {
-    penduduk: Record<string, any>;
+    resident: Record<string, any>;
     sidebarMenus: Array<any>;
 }
 
@@ -16,28 +16,28 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
     {
-        title: 'Penduduk',
-        href: route('dashboard.sid.penduduk.index'),
+        title: 'Resident',
+        href: route('dashboard.sid.resident.index'),
     },
     {
         title: 'Detail',
-        href: route('dashboard.sid.penduduk.show', props.penduduk.id),
+        href: route('dashboard.sid.resident.show', props.resident.id),
     },
 ];
 </script>
 
 <template>
-    <Head title="Detail Penduduk" />
+    <Head title="Resident Details" />
 
     <AppLayout :breadcrumbs="breadcrumbs" :sidebar-menus="props.sidebarMenus">
         <div>
-            <h1>Detail Penduduk</h1>
-            <p><strong>NIK:</strong> {{ props.penduduk.nik }}</p>
-            <p><strong>Nama Lengkap:</strong> {{ props.penduduk.nama_lengkap }}</p>
-            <p><strong>Jenis Kelamin:</strong> {{ props.penduduk.jenis_kelamin }}</p>
-            <!-- Tampilkan detail lain sesuai kolom -->
-            <Link :href="route('dashboard.sid.penduduk.edit', props.penduduk.id)">Edit</Link>
-            <Link :href="route('dashboard.sid.penduduk.index')">Kembali ke Daftar</Link>
+            <h1>Resident Details</h1>
+            <p><strong>NIK:</strong> {{ props.resident.nik }}</p>
+            <p><strong>Full Name:</strong> {{ props.resident.nama_lengkap }}</p>
+            <p><strong>Gender:</strong> {{ props.resident.jenis_kelamin }}</p>
+            <!-- Display other details according to columns -->
+            <Link :href="route('dashboard.sid.resident.edit', props.resident.id)">Edit</Link>
+            <Link :href="route('dashboard.sid.resident.index')">Back to List</Link>
         </div>
     </AppLayout>
 </template>

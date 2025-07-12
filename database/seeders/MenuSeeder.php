@@ -36,94 +36,94 @@ class MenuSeeder extends Seeder
     {
         $menus = [
             [
-                'name' => 'Kependudukan',
+                'name' => 'Resident Management',
                 'url' => '#',
                 'icon' => 'users',
                 'children' => [
-                    ['name' => 'Data Penduduk', 'url' => '/dashboard/sid/penduduk'],
-                    ['name' => 'Keluarga', 'url' => '/dashboard/sid/keluarga'],
-                    ['name' => 'Rumah Tangga', 'url' => '/dashboard/sid/rumah-tangga'],
+                    ['name' => 'Resident Data', 'url' => '/dashboard/sid/resident'],
+                    ['name' => 'Family', 'url' => '/dashboard/sid/keluarga'],
+                    ['name' => 'Household', 'url' => '/dashboard/sid/rumah-tangga'],
                 ],
             ],
             [
-                'name' => 'Statistik',
+                'name' => 'Statistics',
                 'url' => '#',
                 'icon' => 'bar-chart-2',
                 'children' => [
-                    ['name' => 'Statistik Kependudukan', 'url' => '/dashboard/statistik/kependudukan'],
-                    ['name' => 'Laporan Statistik', 'url' => '/dashboard/statistik/laporan'],
+                    ['name' => 'Resident Statistics', 'url' => '/dashboard/statistik/resident'],
+                    ['name' => 'Statistical Reports', 'url' => '/dashboard/statistik/laporan'],
                 ],
             ],
             [
-                'name' => 'Layanan Surat',
+                'name' => 'Correspondence Services',
                 'url' => '#',
                 'icon' => 'mail',
                 'children' => [
-                    ['name' => 'Pengajuan Surat', 'url' => '/dashboard/surat/pengajuan'],
-                    ['name' => 'Arsip Surat', 'url' => '/dashboard/surat/arsip'],
+                    ['name' => 'Letter Submission', 'url' => '/dashboard/surat/pengajuan'],
+                    ['name' => 'Letter Archive', 'url' => '/dashboard/surat/arsip'],
                 ],
             ],
             [
-                'name' => 'Keuangan',
+                'name' => 'Finance',
                 'url' => '#',
                 'icon' => 'dollar-sign',
                 'children' => [
-                    ['name' => 'Anggaran Pendapatan', 'url' => '/dashboard/keuangan/pendapatan'],
-                    ['name' => 'Anggaran Belanja', 'url' => '/dashboard/keuangan/belanja'],
+                    ['name' => 'Revenue Budget', 'url' => '/dashboard/keuangan/pendapatan'],
+                    ['name' => 'Expenditure Budget', 'url' => '/dashboard/keuangan/belanja'],
                 ],
             ],
             [
-                'name' => 'Pembangunan',
+                'name' => 'Development',
                 'url' => '#',
                 'icon' => 'briefcase',
                 'children' => [
-                    ['name' => 'Proyek Pembangunan', 'url' => '/dashboard/pembangunan/proyek'],
-                    ['name' => 'Laporan Pembangunan', 'url' => '/dashboard/pembangunan/laporan'],
+                    ['name' => 'Development Projects', 'url' => '/dashboard/pembangunan/proyek'],
+                    ['name' => 'Development Reports', 'url' => '/dashboard/pembangunan/laporan'],
                 ],
             ],
             [
-                'name' => 'Aset Desa',
+                'name' => 'Village Assets',
                 'url' => '#',
                 'icon' => 'archive',
                 'children' => [
-                    ['name' => 'Data Aset', 'url' => '/dashboard/aset/data'],
-                    ['name' => 'Penyusutan Aset', 'url' => '/dashboard/aset/penyusutan'],
+                    ['name' => 'Asset Data', 'url' => '/dashboard/aset/data'],
+                    ['name' => 'Asset Depreciation', 'url' => '/dashboard/aset/penyusutan'],
                 ],
             ],
             [
-                'name' => 'Bantuan Sosial',
+                'name' => 'Social Assistance',
                 'url' => '#',
                 'icon' => 'heart',
                 'children' => [
-                    ['name' => 'Program Bantuan', 'url' => '/dashboard/bansos/program'],
-                    ['name' => 'Penerima Bantuan', 'url' => '/dashboard/bansos/penerima'],
+                    ['name' => 'Assistance Programs', 'url' => '/dashboard/bansos/program'],
+                    ['name' => 'Assistance Recipients', 'url' => '/dashboard/bansos/penerima'],
                 ],
             ],
             [
-                'name' => 'Informasi Publik',
+                'name' => 'Public Information',
                 'url' => '#',
                 'icon' => 'info',
                 'children' => [
-                    ['name' => 'Pengumuman', 'url' => '/dashboard/info/pengumuman'],
-                    ['name' => 'Berita Desa', 'url' => '/dashboard/info/berita'],
+                    ['name' => 'Announcements', 'url' => '/dashboard/info/pengumuman'],
+                    ['name' => 'Village News', 'url' => '/dashboard/info/berita'],
                 ],
             ],
             [
-                'name' => 'Lembaga Desa',
+                'name' => 'Village Institutions',
                 'url' => '#',
                 'icon' => 'shield',
                 'children' => [
-                    ['name' => 'Struktur Organisasi', 'url' => '/dashboard/lembaga/struktur'],
-                    ['name' => 'Anggota Lembaga', 'url' => '/dashboard/lembaga/anggota'],
+                    ['name' => 'Organizational Structure', 'url' => '/dashboard/lembaga/struktur'],
+                    ['name' => 'Institution Members', 'url' => '/dashboard/lembaga/anggota'],
                 ],
             ],
             [
-                'name' => 'Pengaturan',
+                'name' => 'Settings',
                 'url' => '#',
                 'icon' => 'settings',
                 'children' => [
-                    ['name' => 'Pengguna', 'url' => '/dashboard/pengaturan/pengguna'],
-                    ['name' => 'Peran', 'url' => '/dashboard/pengaturan/peran'],
+                    ['name' => 'Users', 'url' => '/dashboard/pengaturan/pengguna'],
+                    ['name' => 'Roles', 'url' => '/dashboard/pengaturan/peran'],
                 ],
             ],
         ];
@@ -150,10 +150,10 @@ class MenuSeeder extends Seeder
     private function createWebUmumMenus(Group $group): void
     {
         $menus = [
-            ['name' => 'Beranda', 'url' => '/'],
-            ['name' => 'Profil Desa', 'url' => '/profil'],
-            ['name' => 'Berita', 'url' => '/berita'],
-            ['name' => 'Kontak', 'url' => '/kontak'],
+            ['name' => 'Home', 'url' => '/'],
+            ['name' => 'Village Profile', 'url' => '/profil'],
+            ['name' => 'News', 'url' => '/berita'],
+            ['name' => 'Contact', 'url' => '/kontak'],
         ];
 
         foreach ($menus as $menuData) {

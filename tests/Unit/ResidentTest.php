@@ -2,19 +2,19 @@
 
 namespace Tests\Unit;
 
-use App\Models\Penduduk;
+use App\Models\Resident;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class PendudukTest extends TestCase
+class ResidentTest extends TestCase
 {
     use RefreshDatabase;
 
     #[Test]
-    public function test_can_create_penduduk()
+    public function test_can_create_resident()
     {
-        $penduduk = Penduduk::create([
+        $resident = Resident::create([
             'nik' => '1234567890123456',
             'nama_lengkap' => 'John Doe',
             'tempat_lahir' => 'Jakarta',
@@ -25,14 +25,14 @@ class PendudukTest extends TestCase
             'pekerjaan' => 'Karyawan Swasta',
         ]);
 
-        $this->assertNotNull($penduduk);
-        $this->assertEquals('1234567890123456', $penduduk->nik);
-        $this->assertEquals('John Doe', $penduduk->nama_lengkap);
-        $this->assertEquals('john-doe', $penduduk->slug); // Sluggable should convert to lowercase
+        $this->assertNotNull($resident);
+        $this->assertEquals('1234567890123456', $resident->nik);
+        $this->assertEquals('John Doe', $resident->nama_lengkap);
+        $this->assertEquals('john-doe', $resident->slug); // Sluggable should convert to lowercase
     }
 
     #[Test]
-    public function test_penduduk_fillable_attributes()
+    public function test_resident_fillable_attributes()
     {
         $data = [
             'nik' => '6543210987654321',
@@ -45,17 +45,17 @@ class PendudukTest extends TestCase
             'pekerjaan' => 'Wiraswasta',
         ];
 
-        $penduduk = Penduduk::create($data);
+        $resident = Resident::create($data);
 
         foreach ($data as $key => $value) {
-            $this->assertEquals($value, $penduduk->{$key});
+            $this->assertEquals($value, $resident->{$key});
         }
     }
 
     #[Test]
-    public function test_penduduk_slug_generation()
+    public function test_resident_slug_generation()
     {
-        $penduduk = Penduduk::create([
+        $resident = Resident::create([
             'nik' => '1122334455667788',
             'nama_lengkap' => 'Nama Lengkap Dengan Spasi',
             'tempat_lahir' => 'Surabaya',
@@ -66,6 +66,6 @@ class PendudukTest extends TestCase
             'pekerjaan' => 'PNS',
         ]);
 
-        $this->assertEquals('nama-lengkap-dengan-spasi', $penduduk->slug);
+        $this->assertEquals('nama-lengkap-dengan-spasi', $resident->slug);
     }
 }

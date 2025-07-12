@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Penduduk extends Model
+class Resident extends Model
 {
     use LogsActivity;
     use Sluggable;
 
-    protected $table = 'penduduk';
+    protected $table = 'residents';
 
     protected $fillable = [
         'nik',

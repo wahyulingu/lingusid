@@ -4,31 +4,31 @@ LinguSID adalah sebuah Sistem Informasi Desa (SID) berbasis web yang dirancang u
 
 ## Latar Belakang
 
-Pemerintahan desa memiliki tanggung jawab besar dalam mengelola data kependudukan, administrasi pertanahan, keuangan, serta menyelenggarakan pelayanan yang cepat dan akurat bagi warganya. Proses yang dilakukan secara manual seringkali memakan waktu, rentan terhadap kesalahan, dan menyulitkan pelacakan. LinguSID hadir sebagai solusi untuk mentransformasi proses-proses tersebut menjadi lebih efisien, terpusat, dan transparan.
+Pemerintahan desa memiliki tanggung jawab besar dalam mengelola data residents, administrasi pertanahan, keuangan, serta menyelenggarakan pelayanan yang cepat dan akurat bagi warganya. Proses yang dilakukan secara manual seringkali memakan waktu, rentan terhadap kesalahan, dan menyulitkan pelacakan. LinguSID hadir sebagai solusi untuk mentransformasi proses-proses tersebut menjadi lebih efisien, terpusat, dan transparan.
 
 ## Fitur Utama
 
 LinguSID dilengkapi dengan serangkaian fitur komprehensif yang mencakup berbagai aspek kebutuhan administrasi dan pelayanan desa:
 
-#### 1. Manajemen Data Kependudukan
-- **Data Penduduk & Keluarga:** Pencatatan data penduduk secara detail, termasuk informasi pribadi, status perkawinan, pendidikan, pekerjaan, dan hubungan dalam keluarga.
-- **Siklus Hidup:** Pengelolaan data peristiwa penting seperti kelahiran, kematian, serta perpindahan penduduk (datang dan pergi) yang tercatat secara sistematis.
-- **Kelompok Rentan:** Fitur untuk mengelola dan memantau data kelompok rentan atau berkebutuhan khusus di desa.
+#### 1. Resident Data Management
+- **Resident & Family Data:** Detailed recording of resident data, including personal information, marital status, education, occupation, and family relationships.
+- **Life Cycle:** Management of important events such as births, deaths, and population movements (arrivals and departures) recorded systematically.
+- **Vulnerable Groups:** Feature to manage and monitor data of vulnerable or special needs groups in the village.
 
-#### 2. Administrasi Surat-Menyurat
-- **Generator Surat Otomatis:** Kemudahan untuk membuat dan mencetak berbagai jenis surat keterangan (seperti surat keterangan usaha, domisili, tidak mampu, dll.) secara cepat dengan data yang terintegrasi langsung dari database kependudukan.
-- **Templat Dinamis:** Tersedia puluhan templat surat yang siap pakai dan dapat disesuaikan dengan format atau peraturan yang berlaku di masing-masing daerah.
-- **Arsip Digital:** Setiap surat yang diterbitkan akan diarsipkan secara digital, lengkap dengan nomor surat dan tanggal penerbitan untuk kemudahan penelusuran.
+#### 2. Correspondence Administration
+- **Automatic Letter Generator:** Ease of creating and printing various types of certificates (such as business certificates, domicile, incapacity, etc.) quickly with data integrated directly from the resident database.
+- **Dynamic Templates:** Dozens of ready-to-use letter templates that can be adjusted to the format or regulations applicable in each region.
+- **Digital Archive:** Every issued letter will be digitally archived, complete with letter number and issuance date for easy retrieval.
 
-#### 3. Manajemen Program Bantuan Sosial
-- **Pendataan Calon Penerima:** Mengelola daftar calon dan penerima program bantuan sosial dari berbagai sumber (pemerintah pusat, daerah, atau dana desa).
-- **Analisis Kelayakan:** Sistem dapat membantu melakukan analisis dan pemeringkatan calon penerima berdasarkan kriteria yang telah ditetapkan untuk memastikan bantuan tepat sasaran.
-- **Pelaporan & Pemantauan:** Memantau dan melaporkan realisasi penyaluran bantuan kepada warga.
+#### 3. Social Assistance Program Management
+- **Prospective Recipient Data Collection:** Managing lists of prospective and actual recipients of social assistance programs from various sources (central government, regional, or village funds).
+- **Eligibility Analysis:** The system can help analyze and rank prospective recipients based on established criteria to ensure assistance is well-targeted.
+- **Reporting & Monitoring:** Monitoring and reporting the realization of aid distribution to citizens.
 
-#### 4. Statistik dan Demografi
-- **Dasbor Interaktif:** Menyajikan data kependudukan dalam bentuk visual seperti diagram lingkaran, grafik batang, dan piramida penduduk.
-- **Laporan Dinamis:** Menghasilkan laporan statistik berdasarkan berbagai kategori seperti rentang usia, jenis kelamin, tingkat pendidikan, agama, dan pekerjaan.
-- **Analisis Tren:** Membantu pemerintah desa dalam memahami tren demografis untuk mendukung perencanaan pembangunan yang lebih baik.
+#### 4. Statistics and Demographics
+- **Interactive Dashboard:** Presenting resident data in visual forms such as pie charts, bar graphs, and population pyramids.
+- **Dynamic Reports:** Generating statistical reports based on various categories such as age range, gender, education level, religion, and occupation.
+- **Trend Analysis:** Assisting village governments in understanding demographic trends to support better development planning.
 
 #### 5. Informasi Publik & Transparansi Desa
 - **Portal Berita Desa:** Fitur untuk mempublikasikan berita terkini, pengumuman resmi, dan agenda kegiatan desa melalui situs web yang dapat diakses oleh publik.
@@ -41,7 +41,7 @@ LinguSID dilengkapi dengan serangkaian fitur komprehensif yang mencakup berbagai
 
 ## Teknologi
 
-LinguSID dibangun menggunakan tumpukan teknologi yang andal dan modern:
+LinguSID dibangun menggunakan tumpukan teknologi yang handal dan modern:
 - **Backend:** PHP & Laravel Framework
 - **Frontend:** TypeScript, Vue.js, Inertia.js
 - **Database:** MySQL / PostgreSQL / SQLite
@@ -50,3 +50,46 @@ LinguSID dibangun menggunakan tumpukan teknologi yang andal dan modern:
 ---
 
 Dengan fitur-fitur ini, LinguSID bertujuan untuk menjadi platform digital terpadu yang memberdayakan pemerintah desa dan melayani masyarakat dengan lebih baik.
+
+## Pengembangan
+
+Untuk menyiapkan lingkungan pengembangan, ikuti langkah-langkah berikut:
+
+1.  **Kloning repositori:**
+    ```bash
+    git clone [repository_url]
+    cd LinguSID
+    ```
+2.  **Instal dependensi PHP:**
+    ```bash
+    composer install
+    ```
+3.  **Instal dependensi JavaScript:**
+    ```bash
+    bun install
+    ```
+4.  **Salin file lingkungan dan buat kunci aplikasi:**
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+5.  **Konfigurasi basis data Anda di `.env` dan jalankan migrasi:**
+    ```bash
+    php artisan migrate
+    ```
+6.  **Jalankan server pengembangan:**
+    ```bash
+    php artisan serve
+    bun run dev
+    ```
+
+### Menjalankan Tes
+
+Untuk menjalankan tes, gunakan perintah berikut:
+```bash
+php artisan test
+```
+
+### Berkontribusi
+
+Kami menyambut kontribusi! Silakan baca `CONTRIBUTING.md` kami (jika tersedia) untuk panduan tentang cara berkontribusi.

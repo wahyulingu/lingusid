@@ -15,12 +15,12 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
     {
-        title: 'Penduduk',
-        href: route('dashboard.sid.penduduk.index'),
+        title: 'Resident',
+        href: route('dashboard.sid.resident.index'),
     },
     {
-        title: 'Tambah',
-        href: route('dashboard.sid.penduduk.create'),
+        title: 'Add',
+        href: route('dashboard.sid.resident.create'),
     },
 ];
 
@@ -36,16 +36,16 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('dashboard.sid.penduduk.store'));
+    form.post(route('dashboard.sid.resident.store'));
 };
 </script>
 
 <template>
-    <Head title="Tambah Penduduk" />
+    <Head title="Add Resident" />
 
     <AppLayout :breadcrumbs="breadcrumbs" :sidebar-menus="props.sidebarMenus">
         <div>
-            <h1>Tambah Penduduk Baru</h1>
+            <h1>Add New Resident</h1>
             <form @submit.prevent="submit">
                 <div>
                     <label for="nik">NIK:</label>
@@ -53,22 +53,22 @@ const submit = () => {
                     <div v-if="form.errors.nik">{{ form.errors.nik }}</div>
                 </div>
                 <div>
-                    <label for="nama_lengkap">Nama Lengkap:</label>
+                    <label for="nama_lengkap">Full Name:</label>
                     <input id="nama_lengkap" v-model="form.nama_lengkap" type="text" />
                     <div v-if="form.errors.nama_lengkap">{{ form.errors.nama_lengkap }}</div>
                 </div>
                 <div>
-                    <label for="jenis_kelamin">Jenis Kelamin:</label>
+                    <label for="jenis_kelamin">Gender:</label>
                     <select id="jenis_kelamin" v-model="form.jenis_kelamin">
-                        <option value="Laki-laki">Laki-laki</option>
-                        <option value="Perempuan">Perempuan</option>
+                        <option value="Laki-laki">Male</option>
+                        <option value="Perempuan">Female</option>
                     </select>
                     <div v-if="form.errors.jenis_kelamin">{{ form.errors.jenis_kelamin }}</div>
                 </div>
-                <!-- Tambahkan input lain sesuai kolom migrasi -->
-                <button type="submit" :disabled="form.processing">Simpan</button>
+                <!-- Add other inputs according to migration columns -->
+                <button type="submit" :disabled="form.processing">Save</button>
             </form>
-            <Link :href="route('dashboard.sid.penduduk.index')">Kembali</Link>
+            <Link :href="route('dashboard.sid.resident.index')">Back</Link>
         </div>
     </AppLayout>
 </template>

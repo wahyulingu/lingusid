@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Dashboard\Sid\PendudukController;
+use App\Http\Controllers\Dashboard\Sid\ResidentController;
 use App\Http\Controllers\Dashboard\Web\MenuController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // SID routes
     Route::prefix('dashboard/sid')->name('dashboard.sid.')->group(function () {
-        Route::resource('penduduk', PendudukController::class);
+        Route::resource('resident', ResidentController::class);
     });
 
     // Dashboard Web routes
