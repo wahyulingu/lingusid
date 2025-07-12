@@ -23,10 +23,9 @@ class UpdateMenuActionTest extends TestCase
     #[Test]
     public function test_updates_a_menu_with_valid_data(): void
     {
-        $menu = Menu::factory()->make();
+        $menu = Menu::factory()->create();
         $data = [
             'name' => 'Updated Menu',
-            'type' => 'footer',
             'url' => '/updated-menu',
             'icon' => 'updated-icon',
             'order' => 2,
@@ -43,7 +42,7 @@ class UpdateMenuActionTest extends TestCase
         });
 
         $action = new UpdateMenuAction($this->app->make(MenuRepository::class));
-        $updatedMenu = $action->execute(['menu' => $menu] + $data);
+        $updatedMenu = $action->execute(['id' => $menu->getKey()] + $data);
 
         $this->assertInstanceOf(Menu::class, $updatedMenu);
         $this->assertEquals('Updated Menu', $updatedMenu->name);
@@ -57,10 +56,9 @@ class UpdateMenuActionTest extends TestCase
         $menu = Menu::factory()->make();
         $data = [
             'name' => '',
-            'type' => 'footer',
         ];
 
         $action = new UpdateMenuAction($this->app->make(MenuRepository::class));
-        $action->execute(['menu' => $menu] + $data);
+        $action->execute(['id' => $menu->getKey()] + $data);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Actions\Menu;
 
-use App\Actions\Menu\DeleteMenuAction;
+use App\Actions\Menu\DeleteMenuByIdAction;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,17 +22,17 @@ class DeleteMenuActionTest extends TestCase
     #[Test]
     public function test_deletes_a_menu(): void
     {
-        $menu = Menu::factory()->make();
+        $menu = Menu::factory()->create();
 
         $this->mock(MenuRepository::class, function ($mock) use ($menu) {
             $mock->shouldReceive('delete')
                 ->once()
-                ->with($menu->id)
+                ->with($menu->getKey())
                 ->andReturn(true);
         });
 
-        $action = new DeleteMenuAction($this->app->make(MenuRepository::class));
-        $result = $action->execute(['menu' => $menu]);
+        $action = new DeleteMenuByIdAction($this->app->make(MenuRepository::class));
+        $result = $action->execute(['id' => $menu->getKey()]);
 
         $this->assertTrue($result);
     }

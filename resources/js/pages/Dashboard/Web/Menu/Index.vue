@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import draggable from 'vuedraggable';
+import { Head, useForm } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import InputError from '@/components/InputError.vue';
+import { type BreadcrumbItem } from '@/types';
 
 const props = defineProps({
     menus: Array,
@@ -63,60 +67,48 @@ const deleteMenu = (menu) => {
         useForm({}).delete(route('dashboard.web.menu.destroy', menu.id));
     }
 };
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Menu Management',
+        href: '/dashboard/web/menu',
+    },
+];
 </script>
 
 <template>
-    <AppLayout title="Menu Management">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Menu Management
-            </h2>
-        </template>
+    <Head title="Menu Management" />
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="flex justify-end mb-4">
-                            <button @click="openModal()"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Create Menu
-                            </button>
-                        </div>
-                        <div v-for="group in menus" :key="group.id">
-                            <h3 class="text-lg font-semibold mb-2">{{ group.name }}</h3>
-                            <draggable v-model="group.menus" group="menus" @start="drag = true" @end="drag = false"
-                                item-key="id">
-                                <template #item="{ element }">
-                                    <div class="p-2 border rounded mb-2">
-                                        <div class="flex justify-between items-center">
-                                            <span>{{ element.name }}</span>
-                                            <div>
-                                                <button @click="openModal(element)"
-                                                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs">Edit</button>
-                                                <button @click="deleteMenu(element)"
-                                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs ml-2">Delete</button>
-                                            </div>
+    <AppLayout :breadcrumbs="breadcrumbs">
+        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
+            <div class="flex justify-end mb-4">
+                <Button @click="openModal()">
+                    Create Menu
+                </Button>
+            </div>
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                <div v-for="group in menus" :key="group.id" class="mb-6">
+                    <h3 class="text-lg font-semibold mb-2">{{ group.name }}</h3>
+                    <div class="border rounded-md p-4">
+                        <div v-for="element in group.menus" :key="element.id" class="p-2 border-b last:border-b-0">
+                            <div class="flex justify-between items-center">
+                                <span>{{ element.name }}</span>
+                                <div>
+                                    <Button variant="outline" size="sm" @click="openModal(element)" class="mr-2">Edit</Button>
+                                    <Button variant="destructive" size="sm" @click="deleteMenu(element)">Delete</Button>
+                                </div>
+                            </div>
+                            <div v-if="element.children && element.children.length > 0" class="ml-4 mt-2">
+                                <div v-for="child in element.children" :key="child.id" class="p-2 border-b last:border-b-0">
+                                    <div class="flex justify-between items-center">
+                                        <span>{{ child.name }}</span>
+                                        <div>
+                                            <Button variant="outline" size="sm" @click="openModal(child)" class="mr-2">Edit</Button>
+                                            <Button variant="destructive" size="sm" @click="deleteMenu(child)">Delete</Button>
                                         </div>
-                                        <draggable v-model="element.children" group="menus" @start="drag = true"
-                                            @end="drag = false" item-key="id" class="ml-4 mt-2">
-                                            <template #item="{ element: child }">
-                                                <div class="p-2 border rounded mb-2">
-                                                    <div class="flex justify-between items-center">
-                                                        <span>{{ child.name }}</span>
-                                                        <div>
-                                                            <button @click="openModal(child)"
-                                                                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs">Edit</button>
-                                                            <button @click="deleteMenu(child)"
-                                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs ml-2">Delete</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </template>
-                                        </draggable>
                                     </div>
-                                </template>
-                            </draggable>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,48 +119,51 @@ const deleteMenu = (menu) => {
             <DialogContent class="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{{ isEditMode ? 'Edit Menu' : 'Create Menu' }}</DialogTitle>
+                    <DialogDescription>
+                        {{ isEditMode ? 'Edit the menu details.' : 'Create a new menu item.' }}
+                    </DialogDescription>
                 </DialogHeader>
                 <form @submit.prevent="submit">
-                    <div class="mt-4">
-                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                        <input type="text" v-model="form.name" id="name"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <div class="grid gap-4 py-4">
+                        <div class="grid gap-2">
+                            <Label for="name">Name</Label>
+                            <Input id="name" v-model="form.name" required />
+                            <InputError :message="form.errors.name" />
+                        </div>
+                        <div class="grid gap-2">
+                            <Label for="url">URL</Label>
+                            <Input id="url" v-model="form.url" />
+                            <InputError :message="form.errors.url" />
+                        </div>
+                        <div class="grid gap-2">
+                            <Label for="icon">Icon</Label>
+                            <Input id="icon" v-model="form.icon" />
+                            <InputError :message="form.errors.icon" />
+                        </div>
+                        <div class="grid gap-2">
+                            <Label for="group">Category</Label>
+                            <select v-model="form.group_id" id="group"
+                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                <option v-for="group in menus" :key="group.id" :value="group.id">{{ group.name }}</option>
+                            </select>
+                            <InputError :message="form.errors.group_id" />
+                        </div>
+                        <div class="grid gap-2">
+                            <Label for="parent">Parent Menu</Label>
+                            <select v-model="form.parent_id" id="parent"
+                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                <option :value="null">None</option>
+                                <option v-for="menu in allMenus" :key="menu.id" :value="menu.id">{{ menu.name }}</option>
+                            </select>
+                            <InputError :message="form.errors.parent_id" />
+                        </div>
                     </div>
-                    <div class="mt-4">
-                        <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
-                        <input type="text" v-model="form.url" id="url"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                    </div>
-                    <div class="mt-4">
-                        <label for="icon" class="block text-sm font-medium text-gray-700">Icon</label>
-                        <input type="text" v-model="form.icon" id="icon"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                    </div>
-                    <div class="mt-4">
-                        <label for="group" class="block text-sm font-medium text-gray-700">Category</label>
-                        <select v-model="form.group_id" id="group"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                            <option v-for="group in menus" :key="group.id" :value="group.id">{{ group.name }}</option>
-                        </select>
-                    </div>
-                    <div class="mt-4">
-                        <label for="parent" class="block text-sm font-medium text-gray-700">Parent Menu</label>
-                        <select v-model="form.parent_id" id="parent"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                            <option :value="null">None</option>
-                            <option v-for="menu in allMenus" :key="menu.id" :value="menu.id">{{ menu.name }}</option>
-                        </select>
-                    </div>
-                    <div class="mt-6 flex justify-end">
+                    <DialogFooter>
                         <DialogClose as-child>
-                            <button type="button"
-                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+                            <Button type="button" variant="secondary">Cancel</Button>
                         </DialogClose>
-                        <button type="submit"
-                            class="ml-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{
-                                isEditMode ?
-                                    'Update' : 'Create' }}</button>
-                    </div>
+                        <Button type="submit" :disabled="form.processing">{{ isEditMode ? 'Update' : 'Create' }}</Button>
+                    </DialogFooter>
                 </form>
             </DialogContent>
         </Dialog>

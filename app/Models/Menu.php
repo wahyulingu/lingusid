@@ -20,7 +20,6 @@ class Menu extends Model
         'order',
         'parent_id',
         'slug',
-        'type',
     ];
 
     public function sluggable(): array
@@ -40,5 +39,10 @@ class Menu extends Model
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Menu::class, 'parent_id');
+    }
+
+    public function groups()
+    {
+        return $this->morphToMany(Group::class, 'groupable', 'model_has_groups');
     }
 }

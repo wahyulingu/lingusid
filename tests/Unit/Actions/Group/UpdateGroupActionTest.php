@@ -22,7 +22,7 @@ class UpdateGroupActionTest extends TestCase
     #[Test]
     public function it_updates_a_group_with_valid_data(): void
     {
-        $group = Group::factory()->make();
+        $group = Group::factory()->create(); // Use create() to persist and get an id
         $data = [
             'name' => 'Updated Name',
             'type' => 'updated_type',
@@ -41,7 +41,7 @@ class UpdateGroupActionTest extends TestCase
         });
 
         $action = new UpdateGroupAction($this->app->make(GroupRepository::class));
-        $updatedGroup = $action->execute(['group' => $group] + $data);
+        $updatedGroup = $action->execute(['id' => $group->getKey()] + $data);
 
         $this->assertInstanceOf(Group::class, $updatedGroup);
         $this->assertEquals('Updated Name', $updatedGroup->name);

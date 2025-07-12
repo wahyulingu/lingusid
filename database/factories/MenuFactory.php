@@ -16,7 +16,6 @@ class MenuFactory extends Factory
             'url' => $this->faker->url(),
             'icon' => $this->faker->word(),
             'order' => $this->faker->numberBetween(0, 100),
-            'type' => 'main',
             'parent_id' => null,
 
         ];

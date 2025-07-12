@@ -22,6 +22,7 @@ class GroupActionTest extends TestCase
             'type' => 'test_type',
             'url' => 'http://example.com',
             'icon' => 'test_icon',
+            'description' => fake()->sentence(),
         ];
 
         $group = CreateGroupAction::handle($data);
@@ -30,7 +31,6 @@ class GroupActionTest extends TestCase
         $this->assertDatabaseHas('groups', [
             'name' => 'Test Group',
             'slug' => 'test-group',
-            'type' => 'test_type',
         ]);
     }
 
@@ -39,25 +39,21 @@ class GroupActionTest extends TestCase
     {
         $group = Group::factory()->create([
             'name' => 'Original Name',
-            'type' => 'original_type',
         ]);
 
         $updateData = [
             'name' => 'Updated Name',
-            'type' => 'updated_type',
             'url' => 'http://updated.com',
             'icon' => 'updated_icon',
         ];
 
-        $updatedGroup = UpdateGroupAction::handle(['group' => $group, 'name' => 'Updated Name', 'type' => 'updated_type', 'url' => 'http://updated.com', 'icon' => 'updated_icon']);
+        $updatedGroup = UpdateGroupAction::handle(['id' => $group->getKey()] + $updateData);
 
         $this->assertInstanceOf(Group::class, $updatedGroup);
         $this->assertEquals('Updated Name', $updatedGroup->name);
         $this->assertDatabaseHas('groups', [
-            'id' => $group->id,
+            'id' => $group->getKey(),
             'name' => 'Updated Name',
-            'slug' => 'updated-name',
-            'type' => 'updated_type',
         ]);
     }
 

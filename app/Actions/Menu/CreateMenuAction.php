@@ -35,7 +35,7 @@ class CreateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'icon' => 'nullable|string|max:255',
             'order' => 'nullable|integer',
             'parent_id' => 'nullable|exists:menus,id',
-            'group_id' => 'required|exists:groups,id',
+            'group_id' => 'nullable|exists:groups,id',
         ];
     }
 }

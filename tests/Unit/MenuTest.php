@@ -20,7 +20,6 @@ class MenuTest extends TestCase
             'url' => '/dashboard',
             'icon' => 'fa-home',
             'order' => 1,
-            'type' => 'main',
         ]);
 
         $this->assertNotNull($menu);
@@ -28,7 +27,6 @@ class MenuTest extends TestCase
         $this->assertEquals('/dashboard', $menu->url);
         $this->assertEquals('fa-home', $menu->icon);
         $this->assertEquals(1, $menu->order);
-        $this->assertEquals('main', $menu->type);
         $this->assertEquals('dashboard', $menu->slug);
     }
 

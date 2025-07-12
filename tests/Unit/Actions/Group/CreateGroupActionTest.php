@@ -24,6 +24,7 @@ class CreateGroupActionTest extends TestCase
     {
         $data = [
             'name' => 'Test Group',
+            'description' => 'Ea est dolor consequatur cum rerum.',
             'type' => 'test_type',
             'url' => 'http://example.com',
             'icon' => 'test_icon',

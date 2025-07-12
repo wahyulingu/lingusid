@@ -4,7 +4,6 @@ namespace App\Actions\Group;
 
 use App\Models\Group;
 use App\Repositories\GroupRepository;
-use Illuminate\Support\Str;
 
 class UpdateGroupAction extends \App\Actions\RuledAction implements \App\Contracts\Action\RuledActionContract
 {
@@ -12,28 +11,22 @@ class UpdateGroupAction extends \App\Actions\RuledAction implements \App\Contrac
 
     protected function handler(array $validatedPayload, array $payload): Group
     {
-        $group = $payload['group'];
+        $groupId = $validatedPayload['id'];
+        unset($validatedPayload['id']);
 
-        return $this->groupRepository->update($group->id, [
-            'name' => $validatedPayload['name'],
-            'slug' => Str::slug($validatedPayload['name']),
-            'type' => $validatedPayload['type'],
-            'description' => json_encode([
-                'url' => $validatedPayload['url'] ?? null,
-                'icon' => $validatedPayload['icon'] ?? null,
-            ]),
-            'parent_id' => $validatedPayload['parent_id'] ?? null,
-        ]);
+        return $this->groupRepository->update($groupId, $validatedPayload);
     }
 
     public function rules(array $payload): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+            'name' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
             'url' => 'nullable|string|max:255',
             'icon' => 'nullable|string|max:255',
             'parent_id' => 'nullable|exists:groups,id',
+            'id' => 'required|exists:groups,id',
         ];
     }
 }
