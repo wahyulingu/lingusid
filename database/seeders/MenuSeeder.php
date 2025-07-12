@@ -14,15 +14,13 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         $dashboardGroup = Group::create([
-            'name' => 'Menu Dashboard',
-            'slug' => 'menu-dashboard',
-            'type' => 'menu',
+            'name' => 'System:: Main Navigation Menu',
+            'type' => Menu::class,
         ]);
 
         $webUmumGroup = Group::create([
-            'name' => 'Menu Web Umum',
-            'slug' => 'menu-web-umum',
-            'type' => 'menu',
+            'name' => 'System:: Web Menu',
+            'type' => Menu::class,
         ]);
 
         // Menu Dashboard

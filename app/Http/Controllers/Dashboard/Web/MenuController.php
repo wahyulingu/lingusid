@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard\Web;
 
 use App\Actions\Menu\CreateMenuAction;
-use App\Actions\Menu\DeleteMenuAction;
-use App\Actions\Menu\GetMenuByCategoryAction;
+use App\Actions\Menu\DeleteMenuByIdAction;
+use App\Actions\Menu\GetMainNavigationGroupAction;
+use App\Actions\Menu\GetMenuByGroupAction;
 use App\Actions\Menu\UpdateMenuAction;
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
@@ -13,10 +14,14 @@ use Inertia\Inertia;
 
 class MenuController extends Controller
 {
-    public function index(GetMenuByCategoryAction $action)
+    public function index(
+        GetMainNavigationGroupAction $getMainNavigationGroupAction,
+        GetMenuByGroupAction $getMenuByGroupAction)
     {
         return Inertia::render('Dashboard/Web/Menu/Index', [
-            'menus' => $action->execute(),
+            'menus' => $getMenuByGroupAction->execute([
+                'id' => $getMainNavigationGroupAction->execute()->getKey(),
+            ]),
         ]);
     }
 
@@ -48,7 +53,7 @@ class MenuController extends Controller
         ]);
     }
 
-    public function destroy(Menu $menu, DeleteMenuAction $action)
+    public function destroy(Menu $menu, DeleteMenuByIdAction $action)
     {
         $action->execute(['menu' => $menu]);
 

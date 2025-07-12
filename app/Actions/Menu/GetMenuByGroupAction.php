@@ -15,14 +15,14 @@ class GetMenuByGroupAction extends BaseAction implements RuledActionContract
 
     protected function handler(array $validatedPayload, array $payload): Collection
     {
-        return $this->menuRepository->getByGroupId($payload['categoryId']);
+        return $this->menuRepository->getByGroupId($payload['id']);
     }
 
     public function rules(array $payload): array
     {
         // Define your validation rules here
         return [
-            'categoryId' => ['required', 'exists:groups,id'],
+            'id' => ['required', 'exists:groups'],
         ];
     }
 }

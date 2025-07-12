@@ -24,7 +24,7 @@ class MenuRepository extends Repository
     public function getByGroupId(int $groupId)
     {
         return Menu::whereHas('groups', function ($query) use ($groupId) {
-            $query->where('groups.id', $groupId);
+            $query->whereKey($groupId);
         })->get();
     }
 }
