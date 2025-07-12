@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Heading from '@/components/Heading.vue';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { type NavItem } from '@/types';
+import Heading from '@/Components/Heading.vue';
+import { Button } from '@/Components/ui/button';
+import { Separator } from '@/Components/ui/separator';
+import { type NavItem } from '@/Types';
 import { Link, usePage } from '@inertiajs/vue3';
 
 const sidebarNavItems: NavItem[] = [
@@ -32,15 +32,10 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
         <div class="flex flex-col space-y-8 md:space-y-0 lg:flex-row lg:space-y-0 lg:space-x-12">
             <aside class="w-full max-w-xl lg:w-48">
                 <nav class="flex flex-col space-y-1 space-x-0">
-                    <Button
-                        v-for="item in sidebarNavItems"
-                        :key="item.href"
-                        variant="ghost"
-                        :class="['w-full justify-start', { 'bg-muted': currentPath === item.href }]"
-                        as-child
-                    >
+                    <Button v-for="item in sidebarNavItems" :key="item.href" variant="ghost"
+                        :class="['w-full justify-start', { 'bg-muted': currentPath === item.href }]" as-child>
                         <Link :href="item.href">
-                            {{ item.title }}
+                        {{ item.title }}
                         </Link>
                     </Button>
                 </nav>

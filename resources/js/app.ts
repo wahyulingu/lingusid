@@ -1,30 +1,29 @@
 import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
-import { initializeTheme } from './composables/useAppearance';
+import { initializeTheme } from './Composables/useAppearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) => {
-        const pages = import.meta.glob<DefineComponent>('./pages/**/*.vue');
-        let path = `./pages/${name}.vue`;
+        const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue');
+        let path = `./Pages/${name}.vue`;
         if (!pages[path]) {
-            path = `./pages/dashboard/${name}.vue`;
+            path = `./Pages/Dashboard/${name}.vue`;
         }
         if (!pages[path]) {
-            path = `./pages/dashboard/web/${name}.vue`;
+            path = `./Pages/Dashboard/web/${name}.vue`;
         }
         if (!pages[path]) {
-            path = `./pages/dashboard/sid/${name}.vue`;
+            path = `./Pages/Dashboard/sid/${name}.vue`;
         }
         if (!pages[path]) {
-            path = `./pages/public/${name}.vue`;
+            path = `./Pages/Public/${name}.vue`;
         }
         return pages[path]();
     },

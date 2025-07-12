@@ -5,15 +5,15 @@ import {
     SidebarMenuButton,
     SidebarMenuSub,
     SidebarMenuSubButton,
-} from '@/components/ui/sidebar';
+} from '@/Components/ui/sidebar';
 import Icon from '@/components/Icon.vue';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
+} from '@/Components/ui/dropdown-menu';
+import { Button } from '@/Components/ui/button';
 
 interface Menu {
     id: number;
@@ -41,8 +41,8 @@ const deleteMenu = (id: string) => {
         <SidebarMenuItem class="flex items-center justify-between">
             <SidebarMenuButton :as-child="!!menu.url">
                 <Link v-if="menu.url" :href="menu.url">
-                    <Icon v-if="menu.icon" :name="menu.icon" />
-                    <span>{{ menu.name }}</span>
+                <Icon v-if="menu.icon" :name="menu.icon" />
+                <span>{{ menu.name }}</span>
                 </Link>
                 <template v-else>
                     <Icon v-if="menu.icon" :name="menu.icon" />
@@ -59,12 +59,12 @@ const deleteMenu = (id: string) => {
                     <DropdownMenuContent>
                         <DropdownMenuItem as-child>
                             <Link :href="route('dashboard.web.menu.show', menu.id)">
-                                Lihat
+                            Lihat
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem as-child>
                             <Link :href="route('dashboard.web.menu.edit', menu.id)">
-                                Edit
+                            Edit
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem @click="deleteMenu(menu.id)">

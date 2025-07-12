@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Modal from '@/Components/Modal.vue';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/Components/ui/dialog';
 import draggable from 'vuedraggable';
 import { ref, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
@@ -78,30 +78,37 @@ const deleteMenu = (menu) => {
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="p-6">
                         <div class="flex justify-end mb-4">
-                            <button @click="openModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button @click="openModal()"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Create Menu
                             </button>
                         </div>
                         <div v-for="group in menus" :key="group.id">
                             <h3 class="text-lg font-semibold mb-2">{{ group.name }}</h3>
-                            <draggable v-model="group.menus" group="menus" @start="drag=true" @end="drag=false" item-key="id">
-                                <template #item="{element}">
+                            <draggable v-model="group.menus" group="menus" @start="drag = true" @end="drag = false"
+                                item-key="id">
+                                <template #item="{ element }">
                                     <div class="p-2 border rounded mb-2">
                                         <div class="flex justify-between items-center">
                                             <span>{{ element.name }}</span>
                                             <div>
-                                                <button @click="openModal(element)" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs">Edit</button>
-                                                <button @click="deleteMenu(element)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs ml-2">Delete</button>
+                                                <button @click="openModal(element)"
+                                                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs">Edit</button>
+                                                <button @click="deleteMenu(element)"
+                                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs ml-2">Delete</button>
                                             </div>
                                         </div>
-                                        <draggable v-model="element.children" group="menus" @start="drag=true" @end="drag=false" item-key="id" class="ml-4 mt-2">
-                                            <template #item="{element: child}">
+                                        <draggable v-model="element.children" group="menus" @start="drag = true"
+                                            @end="drag = false" item-key="id" class="ml-4 mt-2">
+                                            <template #item="{ element: child }">
                                                 <div class="p-2 border rounded mb-2">
                                                     <div class="flex justify-between items-center">
                                                         <span>{{ child.name }}</span>
                                                         <div>
-                                                            <button @click="openModal(child)" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs">Edit</button>
-                                                            <button @click="deleteMenu(child)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs ml-2">Delete</button>
+                                                            <button @click="openModal(child)"
+                                                                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs">Edit</button>
+                                                            <button @click="deleteMenu(child)"
+                                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs ml-2">Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -116,41 +123,54 @@ const deleteMenu = (menu) => {
             </div>
         </div>
 
-        <Modal :show="isModalOpen" @close="closeModal">
-            <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900">{{ isEditMode ? 'Edit Menu' : 'Create Menu' }}</h2>
+        <Dialog :open="isModalOpen" @update:open="isModalOpen = $event">
+            <DialogContent class="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>{{ isEditMode ? 'Edit Menu' : 'Create Menu' }}</DialogTitle>
+                </DialogHeader>
                 <form @submit.prevent="submit">
                     <div class="mt-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                        <input type="text" v-model="form.name" id="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <input type="text" v-model="form.name" id="name"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                     </div>
                     <div class="mt-4">
                         <label for="url" class="block text-sm font-medium text-gray-700">URL</label>
-                        <input type="text" v-model="form.url" id="url" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <input type="text" v-model="form.url" id="url"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                     </div>
                     <div class="mt-4">
                         <label for="icon" class="block text-sm font-medium text-gray-700">Icon</label>
-                        <input type="text" v-model="form.icon" id="icon" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <input type="text" v-model="form.icon" id="icon"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                     </div>
                     <div class="mt-4">
                         <label for="group" class="block text-sm font-medium text-gray-700">Category</label>
-                        <select v-model="form.group_id" id="group" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <select v-model="form.group_id" id="group"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                             <option v-for="group in menus" :key="group.id" :value="group.id">{{ group.name }}</option>
                         </select>
                     </div>
                     <div class="mt-4">
                         <label for="parent" class="block text-sm font-medium text-gray-700">Parent Menu</label>
-                        <select v-model="form.parent_id" id="parent" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <select v-model="form.parent_id" id="parent"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                             <option :value="null">None</option>
                             <option v-for="menu in allMenus" :key="menu.id" :value="menu.id">{{ menu.name }}</option>
                         </select>
                     </div>
                     <div class="mt-6 flex justify-end">
-                        <button type="button" @click="closeModal" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
-                        <button type="submit" class="ml-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ isEditMode ? 'Update' : 'Create' }}</button>
+                        <DialogClose as-child>
+                            <button type="button"
+                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+                        </DialogClose>
+                        <button type="submit"
+                            class="ml-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{
+                                isEditMode ?
+                                    'Update' : 'Create' }}</button>
                     </div>
                 </form>
-            </div>
-        </Modal>
+            </DialogContent>
+        </Dialog>
     </AppLayout>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem } from '@/Types';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 interface Props {
@@ -31,6 +31,7 @@ const deleteResident = (id: string) => {
 </script>
 
 <template>
+
     <Head title="Resident" />
 
     <AppLayout :breadcrumbs="breadcrumbs" :sidebar-menus="props.sidebarMenus">

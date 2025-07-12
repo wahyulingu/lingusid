@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem } from '@/Types';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 interface Props {
@@ -39,6 +39,7 @@ const submit = () => {
 </script>
 
 <template>
+
     <Head title="Tambah Menu" />
 
     <AppLayout :breadcrumbs="breadcrumbs" :sidebar-menus="props.sidebarMenus">

@@ -34,6 +34,20 @@ class MenuController extends Controller
         return redirect()->route('dashboard.web.menu.index');
     }
 
+    public function show(Menu $menu)
+    {
+        return Inertia::render('Dashboard/Web/Menu/Show', [
+            'menu' => $menu,
+        ]);
+    }
+
+    public function edit(Menu $menu)
+    {
+        return Inertia::render('Dashboard/Web/Menu/Edit', [
+            'menu' => $menu,
+        ]);
+    }
+
     public function destroy(Menu $menu, DeleteMenuAction $action)
     {
         $action->execute(['menu' => $menu]);
