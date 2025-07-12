@@ -11,7 +11,7 @@ class CreateMenuAction extends \App\Actions\RuledAction implements \App\Contract
 
     protected function handler(array $validatedPayload, array $payload): Menu
     {
-        return $this->menuRepository->store([
+        $menu = $this->menuRepository->store([
             'name' => $validatedPayload['name'],
             'url' => $validatedPayload['url'] ?? null,
             'icon' => $validatedPayload['icon'] ?? null,
@@ -19,6 +19,12 @@ class CreateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'parent_id' => $validatedPayload['parent_id'] ?? null,
 
         ]);
+
+        if (isset($validatedPayload['group_id'])) {
+            $menu->groups()->sync($validatedPayload['group_id']);
+        }
+
+        return $menu;
     }
 
     public function rules(array $payload): array
@@ -29,7 +35,7 @@ class CreateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'icon' => 'nullable|string|max:255',
             'order' => 'nullable|integer',
             'parent_id' => 'nullable|exists:menus,id',
-
+            'group_id' => 'required|exists:groups,id',
         ];
     }
 }

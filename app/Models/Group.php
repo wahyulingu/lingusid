@@ -34,4 +34,12 @@ class Group extends Model
     {
         return $this->hasMany(Group::class, 'parent_id');
     }
+
+    /**
+     * Get all of the menus that are assigned this group.
+     */
+    public function menus()
+    {
+        return $this->morphedByMany(Menu::class, 'groupable', 'model_has_groups');
+    }
 }

@@ -13,7 +13,7 @@ class UpdateMenuAction extends \App\Actions\RuledAction implements \App\Contract
     {
         $menu = $payload['menu'];
 
-        return $this->menuRepository->update($menu->id, [
+        $updatedMenu = $this->menuRepository->update($menu->id, [
             'name' => $validatedPayload['name'],
             'url' => $validatedPayload['url'] ?? null,
             'icon' => $validatedPayload['icon'] ?? null,
@@ -22,6 +22,12 @@ class UpdateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'type' => $validatedPayload['type'] ?? 'main',
             'slug' => \Illuminate\Support\Str::slug($validatedPayload['name']),
         ]);
+
+        if (isset($validatedPayload['group_id'])) {
+            $updatedMenu->groups()->sync($validatedPayload['group_id']);
+        }
+
+        return $updatedMenu;
     }
 
     public function rules(array $payload): array
@@ -33,7 +39,7 @@ class UpdateMenuAction extends \App\Actions\RuledAction implements \App\Contract
             'order' => 'nullable|integer',
             'parent_id' => 'nullable|exists:menus,id',
             'type' => 'required|string|in:main,footer',
-
+            'group_id' => 'required|exists:groups,id',
         ];
     }
 }
