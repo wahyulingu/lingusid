@@ -17,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard main page
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard/Dashboard');
+        return Inertia::render('Dashboard/Index');
     })->name('dashboard');
 
     // SID routes

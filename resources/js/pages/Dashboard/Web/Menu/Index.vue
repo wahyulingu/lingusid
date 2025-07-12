@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppLayout from '@/Layouts/AppLayout.vue';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/Components/ui/dialog';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import draggable from 'vuedraggable';
 import { ref, computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';

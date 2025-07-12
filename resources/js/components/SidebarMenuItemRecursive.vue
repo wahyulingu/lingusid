@@ -5,15 +5,15 @@ import {
     SidebarMenuButton,
     SidebarMenuSub,
     SidebarMenuSubButton,
-} from '@/Components/ui/sidebar';
+} from '@/components/ui/sidebar';
 import Icon from '@/components/Icon.vue';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from '@/Components/ui/dropdown-menu';
-import { Button } from '@/Components/ui/button';
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 interface Menu {
     id: number;

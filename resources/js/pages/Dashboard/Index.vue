@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/Types';
+import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '@/Components/PlaceholderPattern.vue';
+import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 
 interface Props {
     sidebarMenus: Array<any>;
