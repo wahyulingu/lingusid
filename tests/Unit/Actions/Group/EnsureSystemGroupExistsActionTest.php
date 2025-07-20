@@ -3,7 +3,7 @@
 namespace Tests\Unit\Actions\Group;
 
 use App\Actions\Group\CreateGroupAction;
-use App\Actions\Group\FindOrCreateSystemGroupAction;
+use App\Actions\Group\EnsureSystemGroupExistsAction;
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,7 +13,7 @@ use Mockery;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class FindOrCreateSystemGroupActionTest extends TestCase
+class EnsureSystemGroupExistsActionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -26,7 +26,7 @@ class FindOrCreateSystemGroupActionTest extends TestCase
         $groupRepository = Mockery::mock(GroupRepository::class);
         $createGroupAction = Mockery::mock(CreateGroupAction::class);
 
-        $action = new FindOrCreateSystemGroupAction($groupRepository, $createGroupAction);
+        $action = new EnsureSystemGroupExistsAction($groupRepository, $createGroupAction);
         $action->handle(123);
     }
 
@@ -34,7 +34,7 @@ class FindOrCreateSystemGroupActionTest extends TestCase
     public function test_handle_with_existing_group_returns_group()
     {
         $groupKey = 'test-group';
-        $slug = Str::of($groupKey)->start(FindOrCreateSystemGroupAction::SYSTEM_GROUP_PREFIX)->slug()->toString();
+        $slug = Str::of($groupKey)->start(EnsureSystemGroupExistsAction::SYSTEM_GROUP_PREFIX)->slug()->toString();
 
         $group = Group::factory()->create(['slug' => $slug]);
 
@@ -43,7 +43,7 @@ class FindOrCreateSystemGroupActionTest extends TestCase
 
         $createGroupAction = Mockery::mock(CreateGroupAction::class);
 
-        $action = new FindOrCreateSystemGroupAction($groupRepository, $createGroupAction);
+        $action = new EnsureSystemGroupExistsAction($groupRepository, $createGroupAction);
         $result = $action->handle($groupKey);
 
         $this->assertInstanceOf(Group::class, $result);
@@ -54,7 +54,7 @@ class FindOrCreateSystemGroupActionTest extends TestCase
     public function test_handle_with_non_existing_group_creates_and_returns_group()
     {
         $groupKey = 'new-group';
-        $slug = Str::of($groupKey)->start(FindOrCreateSystemGroupAction::SYSTEM_GROUP_PREFIX)->slug()->toString();
+        $slug = Str::of($groupKey)->start(EnsureSystemGroupExistsAction::SYSTEM_GROUP_PREFIX)->slug()->toString();
         $name = Str::of($slug)->replace('-', ' ')->title()->toString();
         $description = sprintf('This group is for the %s functionalities.', Str::lower($name));
 
@@ -66,7 +66,7 @@ class FindOrCreateSystemGroupActionTest extends TestCase
         $createGroupAction = Mockery::mock(CreateGroupAction::class);
         $createGroupAction->shouldReceive('handle')->with(compact('name', 'description'))->andReturn($newGroup);
 
-        $action = new FindOrCreateSystemGroupAction($groupRepository, $createGroupAction);
+        $action = new EnsureSystemGroupExistsAction($groupRepository, $createGroupAction);
         $result = $action->handle($groupKey);
 
         $this->assertInstanceOf(Group::class, $result);

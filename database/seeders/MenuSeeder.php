@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Actions\Group\EnsureSystemGroupExistsAction;
 use App\Models\Group;
 use App\Models\Menu;
 use Illuminate\Database\Seeder;
@@ -11,23 +12,12 @@ class MenuSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run(EnsureSystemGroupExistsAction $ensureSystemGroupExists): void
     {
-        //     $dashboardGroup = Group::create([
-        //         'name' => 'System:: Main Navigation Menu',
-        //         'type' => Menu::class,
-        //     ]);
+        $dashboardGroup
 
-        //     $webUmumGroup = Group::create([
-        //         'name' => 'System:: Web Menu',
-        //         'type' => Menu::class,
-        //     ]);
-
-        //     // Menu Dashboard
-        //     $this->createDashboardMenus($dashboardGroup);
-
-        //     // Menu Web Umum
-        //     $this->createWebUmumMenus($webUmumGroup);
+        // Menu Dashboard
+        $this->createDashboardMenus($dashboardGroup);
     }
 
     private function createDashboardMenus(Group $group): void

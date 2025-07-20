@@ -8,7 +8,7 @@ use App\Repositories\GroupRepository;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
-class FindOrCreateSystemGroupAction extends Action
+class EnsureSystemGroupExistsAction extends Action
 {
     public const SYSTEM_GROUP_PREFIX = 'system related group ';
 
