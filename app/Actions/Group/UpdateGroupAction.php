@@ -11,7 +11,7 @@ class UpdateGroupAction extends Action implements RuledActionContract
 {
     public function __construct(protected GroupRepository $groupRepository) {}
 
-    protected function handler($payload, array $validatedPayload = []): Group
+    protected function handler($group, array $validatedPayload = []): Group
     {
         $groupId = $validatedPayload['id'];
         unset($validatedPayload['id']);

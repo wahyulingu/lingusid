@@ -6,7 +6,6 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -136,12 +135,13 @@ abstract class Repository
         return $this->model()::create($attributes);
     }
 
-    public function update($key, array $attributes): Model
+    public function update($key, array $attributes): ?Model
     {
         $model = $this->model()::find($key);
 
         if ($model) {
             $model->update($attributes);
+
             return $model;
         }
 
@@ -155,14 +155,10 @@ abstract class Repository
 
     public function index(
         array $filters = [],
-        int $paginate = 0,
-        array $columns = ['*'],
-        string $pageName = 'page',
-        ?int $page = null,
         array $relations = [],
         string $orderBy = 'id',
         string $orderDirection = 'desc'
-    ): Collection|LengthAwarePaginator {
+    ) {
         $builder = $this->model(fn ($model) => $model::query());
 
         // Apply relations
@@ -198,10 +194,6 @@ abstract class Repository
         }
 
         // Apply ordering
-        $builder->orderBy($orderBy, $orderDirection);
-
-        return $paginate > 0
-            ? $builder->paginate($paginate, $columns, $pageName, $page)
-            : $builder->get($columns);
+        return $builder->orderBy($orderBy, $orderDirection);
     }
 }
