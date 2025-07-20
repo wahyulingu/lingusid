@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('type')->index();
             $table->text('description')->nullable();
-            $table->foreignId('parent_id')->nullable()->constrained('groups')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,7 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('model_has_groups');
         Schema::dropIfExists('groups');
     }
 };

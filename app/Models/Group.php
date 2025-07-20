@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
+use App\Abstractions\Traits\Model\HasGroups;
+use App\Abstractions\Traits\Model\HasMetadata;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Group extends Model
 {
     use HasFactory;
+    use HasGroups;
+    use HasMetadata;
     use Sluggable;
 
     protected $fillable = [
         'name',
-        'slug',
-        'type',
         'description',
-        'parent_id',
     ];
 
     /**
@@ -34,19 +34,11 @@ class Group extends Model
     }
 
     /**
-     * Get the parent group.
-     */
-    public function parent(): BelongsTo
-    {
-        return $this->belongsTo(Group::class, 'parent_id');
-    }
-
-    /**
      * Get the children groups.
      */
-    public function children(): HasMany
+    public function children(): MorphToMany
     {
-        return $this->hasMany(Group::class, 'parent_id');
+        return $this->morphedByMany(self::class, 'groupable', 'model_has_groups');
     }
 
     /**

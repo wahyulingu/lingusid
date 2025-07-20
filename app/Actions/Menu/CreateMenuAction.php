@@ -2,14 +2,16 @@
 
 namespace App\Actions\Menu;
 
+use App\Abstractions\Actions\Action;
+use App\Contracts\Action\RuledActionContract;
 use App\Models\Menu;
 use App\Repositories\MenuRepository;
 
-class CreateMenuAction extends \App\Actions\RuledAction implements \App\Contracts\Action\RuledActionContract
+class CreateMenuAction extends Action implements RuledActionContract
 {
     public function __construct(protected MenuRepository $menuRepository) {}
 
-    protected function handler(array $validatedPayload, array $payload): Menu
+    protected function handler($payload, array $validatedPayload = []): Menu
     {
         $menu = $this->menuRepository->store([
             'name' => $validatedPayload['name'],

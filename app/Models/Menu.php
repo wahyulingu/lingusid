@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use App\Abstractions\Traits\Group\HasGroupsTrait;
-use Cviebrock\EloquentSluggable\Sluggable;
+use App\Abstractions\Traits\Model\HasGroups;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Menu extends Model
 {
-    use HasFactory, HasGroupsTrait, Sluggable;
+    use HasFactory, HasGroups;
 
     protected $fillable = [
         'name',
@@ -19,17 +18,7 @@ class Menu extends Model
         'icon',
         'order',
         'parent_id',
-        'slug',
     ];
-
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
-    }
 
     public function children(): HasMany
     {
@@ -39,10 +28,5 @@ class Menu extends Model
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Menu::class, 'parent_id');
-    }
-
-    public function groups()
-    {
-        return $this->morphToMany(Group::class, 'groupable', 'model_has_groups');
     }
 }

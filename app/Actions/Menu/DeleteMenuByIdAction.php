@@ -2,11 +2,12 @@
 
 namespace App\Actions\Menu;
 
+use App\Abstractions\Actions\Action;
 use App\Contracts\Action\RuledActionContract;
 use App\Repositories\MenuRepository;
 use Illuminate\Validation\Rule;
 
-class DeleteMenuByIdAction extends \App\Actions\BaseAction implements RuledActionContract
+class DeleteMenuByIdAction extends Action implements RuledActionContract
 {
     public function rules($payload = []): array
     {
@@ -17,7 +18,7 @@ class DeleteMenuByIdAction extends \App\Actions\BaseAction implements RuledActio
 
     public function __construct(protected MenuRepository $menuRepository) {}
 
-    protected function handler(array $validatedPayload, array $payload): bool
+    protected function handler($payload, array $validatedPayload = []): bool
     {
         return $this->menuRepository->delete($validatedPayload['id']);
     }

@@ -2,17 +2,16 @@
 
 namespace App\Actions\Resident;
 
-use App\Actions\BaseAction;
-use App\Models\Resident;
+use App\Abstractions\Actions\Action;
 use App\Repositories\ResidentRepository;
 
-class DeleteResidentAction extends BaseAction
+class DeleteResidentAction extends Action
 {
     public function __construct(
         protected ResidentRepository $residentRepository
     ) {}
 
-    protected function handler(array $validatedPayload, array $payload): mixed
+    protected function handler($payload, array $validatedPayload = []): mixed
     {
         return $this->residentRepository->delete($payload['resident']->getKey());
     }

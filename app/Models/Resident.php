@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -10,7 +9,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Resident extends Model
 {
     use LogsActivity;
-    use Sluggable;
 
     protected $table = 'residents';
 
@@ -24,18 +22,6 @@ class Resident extends Model
         'status_perkawinan',
         'pekerjaan',
     ];
-
-    /**
-     * Return the sluggable configuration array for this model.
-     */
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'nama_lengkap',
-            ],
-        ];
-    }
 
     public function getActivitylogOptions(): LogOptions
     {

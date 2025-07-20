@@ -3,15 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Abstractions\Traits\Group\HasGroupsTrait;
+
+use App\Abstractions\Traits\Model\HasGroups;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasPermissions;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasGroupsTrait, Notifiable;
+    use HasFactory, HasGroups, HasPermissions, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.

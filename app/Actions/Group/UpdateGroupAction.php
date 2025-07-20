@@ -2,14 +2,16 @@
 
 namespace App\Actions\Group;
 
+use App\Abstractions\Actions\Action;
+use App\Contracts\Action\RuledActionContract;
 use App\Models\Group;
 use App\Repositories\GroupRepository;
 
-class UpdateGroupAction extends \App\Actions\RuledAction implements \App\Contracts\Action\RuledActionContract
+class UpdateGroupAction extends Action implements RuledActionContract
 {
     public function __construct(protected GroupRepository $groupRepository) {}
 
-    protected function handler(array $validatedPayload, array $payload): Group
+    protected function handler($payload, array $validatedPayload = []): Group
     {
         $groupId = $validatedPayload['id'];
         unset($validatedPayload['id']);

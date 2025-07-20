@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions;
+namespace App\Abstractions\Actions;
 
 use App\Contracts\Action\RuledActionContract;
 
-abstract class IndexAction extends BaseAction implements RuledActionContract
+abstract class IndexAction extends Action implements RuledActionContract
 {
     /**
      * Get the validation rules for the index action.

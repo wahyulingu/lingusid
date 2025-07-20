@@ -2,17 +2,16 @@
 
 namespace App\Actions\Resident;
 
-use App\Actions\BaseAction;
+use App\Abstractions\Actions\Action;
 use App\Repositories\ResidentRepository;
 
-class CreateResidentAction extends BaseAction
+class CreateResidentAction extends Action
 {
     public function __construct(
         protected ResidentRepository $residentRepository
-    ) {
-    }
+    ) {}
 
-    protected function handler(array $validatedPayload, array $payload): mixed
+    protected function handler($payload, array $validatedPayload = []): mixed
     {
         return $this->residentRepository->store($validatedPayload);
     }

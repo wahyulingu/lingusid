@@ -2,16 +2,16 @@
 
 namespace App\Actions\User;
 
-use App\Actions\BaseAction;
+use App\Abstractions\Actions\Action;
 use App\Repositories\UserRepository;
 
-class CreateUserAction extends BaseAction
+class CreateUserAction extends Action
 {
     public function __construct(
         protected UserRepository $userRepository
     ) {}
 
-    protected function handler(array $validatedPayload, array $payload): mixed
+    protected function handler($payload, array $validatedPayload = []): mixed
     {
         return $this->userRepository->store($payload);
     }

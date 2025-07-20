@@ -27,7 +27,6 @@ class MenuTest extends TestCase
         $this->assertEquals('/dashboard', $menu->url);
         $this->assertEquals('fa-home', $menu->icon);
         $this->assertEquals(1, $menu->order);
-        $this->assertEquals('dashboard', $menu->slug);
     }
 
     #[Test]
@@ -58,25 +57,11 @@ class MenuTest extends TestCase
     }
 
     #[Test]
-    public function test_menu_slug_generation()
-    {
-        $menu = Menu::create([
-            'name' => 'Menu Dengan Spasi',
-            'url' => '/menu-dengan-spasi',
-            'icon' => 'fa-star',
-            'order' => 3,
-            'type' => 'main',
-        ]);
-
-        $this->assertEquals('menu-dengan-spasi', $menu->slug);
-    }
-
-    #[Test]
     public function test_menu_can_have_groups()
     {
         $menu = Menu::factory()->create();
-        $group1 = Group::factory()->create(['type' => 'category']);
-        $group2 = Group::factory()->create(['type' => 'tag']);
+        $group1 = Group::factory()->create();
+        $group2 = Group::factory()->create();
 
         $menu->groups()->attach($group1);
         $menu->groups()->attach($group2);
@@ -90,8 +75,8 @@ class MenuTest extends TestCase
     public function test_menu_can_detach_groups()
     {
         $menu = Menu::factory()->create();
-        $group1 = Group::factory()->create(['type' => 'category']);
-        $group2 = Group::factory()->create(['type' => 'tag']);
+        $group1 = Group::factory()->create();
+        $group2 = Group::factory()->create();
 
         $menu->groups()->attach($group1);
         $menu->groups()->attach($group2);
@@ -111,9 +96,9 @@ class MenuTest extends TestCase
     public function test_menu_can_sync_groups()
     {
         $menu = Menu::factory()->create();
-        $group1 = Group::factory()->create(['type' => 'category']);
-        $group2 = Group::factory()->create(['type' => 'tag']);
-        $group3 = Group::factory()->create(['type' => 'tag']);
+        $group1 = Group::factory()->create();
+        $group2 = Group::factory()->create();
+        $group3 = Group::factory()->create();
 
         $menu->groups()->attach($group1);
         $menu->groups()->attach($group2);

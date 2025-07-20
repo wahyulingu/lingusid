@@ -2,27 +2,18 @@
 
 namespace App\Actions\Menu;
 
-use App\Actions\BaseAction;
-use App\Contracts\Action\RuledActionContract;
+use App\Abstractions\Actions\Action;
 use App\Repositories\MenuRepository;
 use Illuminate\Support\Collection;
 
-class GetMenuByGroupAction extends BaseAction implements RuledActionContract
+class GetMenuByGroupAction extends Action
 {
     public function __construct(
         protected readonly MenuRepository $menuRepository
     ) {}
 
-    protected function handler(array $validatedPayload, array $payload): Collection
+    protected function handler($payload, array $validatedPayload = []): Collection
     {
-        return $this->menuRepository->getByGroupId($payload['id']);
-    }
-
-    public function rules(array $payload): array
-    {
-        // Define your validation rules here
-        return [
-            'id' => ['required', 'exists:groups'],
-        ];
+        return $this->menuRepository->getByGroupId($payload);
     }
 }

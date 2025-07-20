@@ -17,9 +17,7 @@ class GroupFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'type' => $this->faker->randomElement([\App\Models\Menu::class, \App\Models\User::class]),
             'description' => $this->faker->paragraph(),
-            'parent_id' => null,
         ];
     }
 

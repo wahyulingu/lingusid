@@ -27,10 +27,7 @@ class MenuActionTest extends TestCase
         $menu = CreateMenuAction::handle($data);
 
         $this->assertInstanceOf(Menu::class, $menu);
-        $this->assertDatabaseHas('menus', [
-            'name' => 'Test Menu',
-            'slug' => 'test-menu',
-        ]);
+        $this->assertDatabaseHas('menus', ['name' => 'Test Menu']);
     }
 
     #[test]

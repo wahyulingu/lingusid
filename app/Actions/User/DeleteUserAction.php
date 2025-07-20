@@ -2,17 +2,16 @@
 
 namespace App\Actions\User;
 
-use App\Actions\BaseAction;
-use App\Models\User;
+use App\Abstractions\Actions\Action;
 use App\Repositories\UserRepository;
 
-class DeleteUserAction extends BaseAction
+class DeleteUserAction extends Action
 {
     public function __construct(
         protected UserRepository $userRepository
     ) {}
 
-    protected function handler(array $validatedPayload, array $payload): mixed
+    protected function handler($payload, array $validatedPayload = []): mixed
     {
         return $this->userRepository->delete($payload['user']->getKey());
     }

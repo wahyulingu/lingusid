@@ -28,7 +28,6 @@ class ResidentTest extends TestCase
         $this->assertNotNull($resident);
         $this->assertEquals('1234567890123456', $resident->nik);
         $this->assertEquals('John Doe', $resident->nama_lengkap);
-        $this->assertEquals('john-doe', $resident->slug); // Sluggable should convert to lowercase
     }
 
     #[Test]
@@ -50,22 +49,5 @@ class ResidentTest extends TestCase
         foreach ($data as $key => $value) {
             $this->assertEquals($value, $resident->{$key});
         }
-    }
-
-    #[Test]
-    public function test_resident_slug_generation()
-    {
-        $resident = Resident::create([
-            'nik' => '1122334455667788',
-            'nama_lengkap' => 'Nama Lengkap Dengan Spasi',
-            'tempat_lahir' => 'Surabaya',
-            'tanggal_lahir' => '1985-11-20',
-            'jenis_kelamin' => 'Laki-laki',
-            'alamat' => 'Jl. Contoh No. 3',
-            'status_perkawinan' => 'Belum Kawin',
-            'pekerjaan' => 'PNS',
-        ]);
-
-        $this->assertEquals('nama-lengkap-dengan-spasi', $resident->slug);
     }
 }

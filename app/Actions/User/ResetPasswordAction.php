@@ -2,14 +2,13 @@
 
 namespace App\Actions\User;
 
-use App\Actions\BaseAction;
-use App\Models\User;
+use App\Abstractions\Actions\Action;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class ResetPasswordAction extends BaseAction
+class ResetPasswordAction extends Action
 {
-    protected function handler(array $validatedPayload, array $payload): mixed
+    protected function handler($payload, array $validatedPayload = []): mixed
     {
         $user = $payload['user'];
         $password = $payload['password'];

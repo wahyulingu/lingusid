@@ -13,21 +13,21 @@ class MenuSeeder extends Seeder
      */
     public function run(): void
     {
-        $dashboardGroup = Group::create([
-            'name' => 'System:: Main Navigation Menu',
-            'type' => Menu::class,
-        ]);
+        //     $dashboardGroup = Group::create([
+        //         'name' => 'System:: Main Navigation Menu',
+        //         'type' => Menu::class,
+        //     ]);
 
-        $webUmumGroup = Group::create([
-            'name' => 'System:: Web Menu',
-            'type' => Menu::class,
-        ]);
+        //     $webUmumGroup = Group::create([
+        //         'name' => 'System:: Web Menu',
+        //         'type' => Menu::class,
+        //     ]);
 
-        // Menu Dashboard
-        $this->createDashboardMenus($dashboardGroup);
+        //     // Menu Dashboard
+        //     $this->createDashboardMenus($dashboardGroup);
 
-        // Menu Web Umum
-        $this->createWebUmumMenus($webUmumGroup);
+        //     // Menu Web Umum
+        //     $this->createWebUmumMenus($webUmumGroup);
     }
 
     private function createDashboardMenus(Group $group): void

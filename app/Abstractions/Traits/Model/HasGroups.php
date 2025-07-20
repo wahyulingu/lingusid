@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Abstractions\Traits\Group;
+namespace App\Abstractions\Traits\Model;
 
 use App\Models\Group;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-trait HasGroupsTrait
+trait HasGroups
 {
     /**
      * Get all of the groups for the model.

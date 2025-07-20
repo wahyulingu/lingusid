@@ -2,11 +2,11 @@
 
 namespace App\Actions\User;
 
-use App\Actions\BaseAction;
+use App\Abstractions\Actions\Action;
 
-class UpdateUserAction extends BaseAction
+class UpdateUserAction extends Action
 {
-    protected function handler(array $validatedPayload, array $payload): mixed
+    protected function handler($payload, array $validatedPayload = []): mixed
     {
         $user = $payload['user'];
 
