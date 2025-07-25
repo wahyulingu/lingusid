@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Sid;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Resident extends Model
+class SidResident extends Model
 {
     use LogsActivity;
-
-    protected $table = 'residents';
 
     protected $fillable = [
         'nik',

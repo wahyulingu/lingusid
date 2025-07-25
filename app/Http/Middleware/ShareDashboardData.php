@@ -2,8 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Actions\Menu\GetMainNavigationGroupAction;
+use App\Actions\Group\EnsureSystemGroupExistsAction;
 use App\Actions\Menu\GetMenuByGroupAction;
+use App\Enums\System\GroupEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,12 +21,13 @@ class ShareDashboardData
     {
         Inertia::share([
             'sidebarMenus' => function (
-                GetMainNavigationGroupAction $getMainNavigationGroupAction,
-                GetMenuByGroupAction $getMenuByGroupAction) {
+                EnsureSystemGroupExistsAction $ensureSystemGroupExists,
+                GetMenuByGroupAction $getMenuByGroup) {
 
-                return $getMenuByGroupAction->execute([
-                    'id' => $getMainNavigationGroupAction->execute()->getKey(),
-                ]);
+                $sidebarMenuGroup = $ensureSystemGroupExists
+                    ->execute(GroupEnum::DASHBOARD_SIDEBAR_MENU->value);
+
+                return $getMenuByGroup->execute($sidebarMenuGroup);
             },
         ]);
 

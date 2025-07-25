@@ -3,21 +3,33 @@
 namespace Database\Seeders;
 
 use App\Actions\Group\EnsureSystemGroupExistsAction;
+use App\Enums\System\GroupEnum;
+use App\Models\Group;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+
+use function Laravel\Prompts\progress;
 
 class GroupSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(EnsureSystemGroupExistsAction $ensureSystemGroupExists): void
+    public function run(EnsureSystemGroupExistsAction $ensureSystemGroupExistsAction): void
     {
-        DB::transaction(function () use ($ensureSystemGroupExists) {
+        $mainGroup = $ensureSystemGroupExistsAction->execute('main');
 
-            $ensureSystemGroupExists->execute('dashboard sidebar menu');
-            $ensureSystemGroupExists->execute('content article category');
+        DB::transaction(function () use ($ensureSystemGroupExistsAction, $mainGroup) {
+            progress(
+                label  : '⏳ Menyiapkan grup sistem',
+                steps  : GroupEnum::cases(),          // iterable = total langkah
+                callback: function ($groupEnum) use ($ensureSystemGroupExistsAction, $mainGroup) {
+                    $mainGroup
 
+                        ->morph(Group::class)
+                        ->save($ensureSystemGroupExistsAction->handle($groupEnum->value));
+                }
+            );
         });
     }
 }

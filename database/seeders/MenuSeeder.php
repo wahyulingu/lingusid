@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Actions\Group\EnsureSystemGroupExistsAction;
+use App\Enums\System\GroupEnum;
 use App\Models\Group;
 use App\Models\Menu;
 use Illuminate\Database\Seeder;
@@ -14,7 +15,7 @@ class MenuSeeder extends Seeder
      */
     public function run(EnsureSystemGroupExistsAction $ensureSystemGroupExists): void
     {
-        $dashboardGroup
+        $dashboardGroup = $ensureSystemGroupExists->execute(GroupEnum::DASHBOARD_SIDEBAR_MENU->value);
 
         // Menu Dashboard
         $this->createDashboardMenus($dashboardGroup);

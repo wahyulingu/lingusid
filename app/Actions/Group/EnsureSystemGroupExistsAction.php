@@ -20,10 +20,10 @@ class EnsureSystemGroupExistsAction extends Action
     /**
      * @param  string  $groupKey  Slug atau identifier untuk grup sistem.
      * @param  array  $validatedPayload  Payload terverifikasi (jika validasi diaktifkan).
-     * @return Group
      */
-    protected function handler($groupKey, array $validatedPayload = []): mixed
+    protected function handler($groupKey, array $validatedPayload = []): Group
     {
+
         if (! is_string($groupKey)) {
 
             throw new InvalidArgumentException('Expected string groupKey for group slug.');

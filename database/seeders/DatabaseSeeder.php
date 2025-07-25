@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(GroupSeeder::class);
         $this->call(MenuSeeder::class);
+        $this->call(TermSeeder::class);
     }
 }

@@ -3,8 +3,9 @@
 namespace App\Actions\Menu;
 
 use App\Abstractions\Actions\Action;
+use App\Models\Group;
 use App\Repositories\MenuRepository;
-use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class GetMenuByGroupAction extends Action
 {
@@ -12,8 +13,14 @@ class GetMenuByGroupAction extends Action
         protected readonly MenuRepository $menuRepository
     ) {}
 
-    protected function handler($payload, array $validatedPayload = []): Collection
+    protected function handler($group, array $validatedPayload = []): mixed
     {
-        return $this->menuRepository->getByGroupId($payload);
+
+        if (! $group instanceof Group) {
+
+            throw new InvalidArgumentException(sprintf('Unexpected group mustbe instaceof %s.', Group::class));
+        }
+
+        return $this->menuRepository->getByGroupId($group->getKey());
     }
 }

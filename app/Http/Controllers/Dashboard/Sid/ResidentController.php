@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard\Sid;
 
-use App\Actions\Resident\CreateResidentAction;
-use App\Actions\Resident\DeleteResidentAction;
-use App\Actions\Resident\UpdateResidentAction;
+use App\Actions\Sid\Resident\CreateResidentAction;
+use App\Actions\Sid\Resident\DeleteResidentAction;
+use App\Actions\Sid\Resident\UpdateResidentAction;
 use App\Http\Controllers\Controller;
-use App\Models\Resident;
-use App\Repositories\ResidentRepository;
+use App\Models\Sid\SidResident;
+use App\Repositories\Sid\SidResidentRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,9 +16,9 @@ class ResidentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(ResidentRepository $residentRepository)
+    public function index(SidResidentRepository $sidResidentRepository)
     {
-        $resident = $residentRepository->all();
+        $resident = $sidResidentRepository->all();
 
         return Inertia::render('Dashboard/Sid/Resident/Index', [
             'resident' => $resident,
@@ -46,14 +46,14 @@ class ResidentController extends Controller
 
         $createResidentAction->handle($validatedData);
 
-        return redirect()->route('resident.index')
+        return redirect()->route('dashboard.sid.resident.index')
             ->with('message', 'Resident data added successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Resident $resident)
+    public function show(SidResident $resident)
     {
         return Inertia::render('Dashboard/Sid/Resident/Show', [
             'resident' => $resident,
@@ -63,7 +63,7 @@ class ResidentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Resident $resident)
+    public function edit(SidResident $resident)
     {
         return Inertia::render('Dashboard/Sid/Resident/Edit', [
             'resident' => $resident,
@@ -73,7 +73,7 @@ class ResidentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Resident $resident, UpdateResidentAction $updateResidentAction)
+    public function update(Request $request, SidResident $resident, UpdateResidentAction $updateResidentAction)
     {
         $validatedData = $request->validate([
             'nik' => 'required|unique:residents,nik,'.$resident->id.',id|max:255',
@@ -83,18 +83,18 @@ class ResidentController extends Controller
 
         $updateResidentAction->handle($resident, $validatedData);
 
-        return redirect()->route('resident.index')
+        return redirect()->route('dashboard.sid.resident.index')
             ->with('message', 'Resident data updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Resident $resident, DeleteResidentAction $deleteResidentAction)
+    public function destroy(SidResident $resident, DeleteResidentAction $deleteResidentAction)
     {
         $deleteResidentAction->handle($resident);
 
-        return redirect()->route('resident.index')
+        return redirect()->route('dashboard.sid.resident.index')
             ->with('message', 'Resident data deleted successfully.');
     }
 }

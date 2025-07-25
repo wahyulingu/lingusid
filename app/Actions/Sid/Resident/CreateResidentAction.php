@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Actions\Resident;
+namespace App\Actions\Sid\Resident;
 
 use App\Abstractions\Actions\Action;
-use App\Repositories\ResidentRepository;
+use App\Repositories\Sid\SidResidentRepository;
 
 class CreateResidentAction extends Action
 {
     public function __construct(
-        protected ResidentRepository $residentRepository
+        protected SidResidentRepository $residentRepository
     ) {}
 
     protected function handler($payload, array $validatedPayload = []): mixed

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Resident;
+use App\Models\Sid\SidResident;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -14,7 +14,7 @@ class ResidentTest extends TestCase
     #[Test]
     public function test_can_create_resident()
     {
-        $resident = Resident::create([
+        $resident = SidResident::create([
             'nik' => '1234567890123456',
             'nama_lengkap' => 'John Doe',
             'tempat_lahir' => 'Jakarta',
@@ -44,7 +44,7 @@ class ResidentTest extends TestCase
             'pekerjaan' => 'Wiraswasta',
         ];
 
-        $resident = Resident::create($data);
+        $resident = SidResident::create($data);
 
         foreach ($data as $key => $value) {
             $this->assertEquals($value, $resident->{$key});

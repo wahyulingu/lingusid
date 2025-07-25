@@ -26,11 +26,7 @@ class Group extends Model
      */
     public function sluggable(): array
     {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
+        return ['slug' => ['source' => 'name']];
     }
 
     /**
@@ -38,14 +34,11 @@ class Group extends Model
      */
     public function children(): MorphToMany
     {
-        return $this->morphedByMany(self::class, 'groupable', 'model_has_groups');
+        return $this->morph(self::class);
     }
 
-    /**
-     * Get all of the menus that are assigned this group.
-     */
-    public function menus()
+    public function morph($entity): MorphToMany
     {
-        return $this->morphedByMany(Menu::class, 'groupable', 'model_has_groups');
+        return $this->morphedByMany($entity, 'groupable', 'model_has_groups');
     }
 }
