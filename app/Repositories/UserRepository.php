@@ -2,12 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Abstractions\Repository\ModelRepository;
 use App\Models\User;
 
 /**
  * @extends Repository<User>
  */
-class UserRepository extends Repository
-{
-    protected $model = User::class;
-}
+class UserRepository extends ModelRepository {}

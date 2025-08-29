@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Dashboard\Sid\ResidentController;
 use App\Http\Controllers\Dashboard\Web\MenuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\ShareDashboardData;
@@ -22,9 +21,7 @@ Route::middleware(['auth', 'verified', ShareDashboardData::class])->group(functi
     })->name('dashboard');
 
     // SID routes
-    Route::prefix('dashboard/sid')->name('dashboard.sid.')->group(function () {
-        Route::resource('resident', ResidentController::class);
-    });
+    Route::prefix('dashboard/sid')->name('dashboard.sid.')->group(function () {});
 
     // Dashboard Web routes
     Route::prefix('dashboard/web')->name('dashboard.web.')->group(function () {

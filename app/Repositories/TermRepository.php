@@ -2,4 +2,6 @@
 
 namespace App\Repositories;
 
-class TermRepository extends Repository {}
+use App\Abstractions\Repository\ModelRepository;
+
+class TermRepository extends ModelRepository {}

@@ -2,9 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Abstractions\Repository\ModelRepository;
 use App\Models\Metadata;
 
-class MetadataRepository extends Repository
+class MetadataRepository extends ModelRepository
 {
     public function __construct(Metadata $model)
     {

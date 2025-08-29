@@ -2,15 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Abstractions\Repository\ModelRepository;
 use App\Models\Menu;
 
-class MenuRepository extends Repository
+class MenuRepository extends ModelRepository
 {
-    /**
-     * @var class-string<Menu>
-     */
-    protected $model = Menu::class;
-
     /**
      * Get menus that have a group with the given group ID.
      *

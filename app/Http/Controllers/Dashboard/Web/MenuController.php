@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard\Web;
 
+use App\Actions\Group\EnsureSystemGroupExistsAction;
 use App\Actions\Menu\CreateMenuAction;
 use App\Actions\Menu\DeleteMenuByIdAction;
-use App\Actions\Menu\GetMainNavigationGroupAction;
 use App\Actions\Menu\GetMenuByGroupAction;
 use App\Actions\Menu\UpdateMenuAction;
 use App\Http\Controllers\Controller;
@@ -15,11 +15,11 @@ use Inertia\Inertia;
 class MenuController extends Controller
 {
     public function index(
-        GetMainNavigationGroupAction $getMainNavigationGroupAction,
-        GetMenuByGroupAction $getMenuByGroupAction)
+        EnsureSystemGroupExistsAction $ensureSystemGroupExists,
+        GetMenuByGroupAction $getMenuByGroup)
     {
         return Inertia::render('Dashboard/Web/Menu/Index', [
-            'menus' => $getMenuByGroupAction->execute([
+            'menus' => $getMenuByGroup->execute([
                 'id' => $getMainNavigationGroupAction->execute()->getKey(),
             ]),
         ]);
