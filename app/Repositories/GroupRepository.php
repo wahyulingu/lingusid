@@ -2,6 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Abstractions\Repository\ModelRepository;
+use App\Abstractions\Traits\Repository\HasModel;
+use App\Contracts\Repository\ModelRepositoryContract;
+use App\Contracts\Repository\RepositoryContract;
 
-class GroupRepository extends ModelRepository {}
+class GroupRepository implements ModelRepositoryContract, RepositoryContract
+{
+    use HasModel;
+}

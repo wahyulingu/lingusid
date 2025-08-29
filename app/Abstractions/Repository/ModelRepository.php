@@ -2,57 +2,21 @@
 
 namespace App\Abstractions\Repository;
 
+use App\Abstractions\Traits\Repository\HasModel;
 use App\Contracts\Repository\ModelRepositoryContract;
-use App\Contracts\Repository\RepositoryContract;
-use Closure;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Str;
 
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
  */
-abstract class ModelRepository implements ModelRepositoryContract, RepositoryContract
+abstract class ModelRepository implements ModelRepositoryContract
 {
-    final public function getNamespace(): string
-    {
-        return App::getNamespace().'Repositories\\';
-    }
-
-    protected function model(?Closure $callable = null): Model
-    {
-        $repositoryName = Str::replaceFirst(self::getNamespace(), '', get_class($this));
-        $modelName = Str::replaceLast('Repository', '', $repositoryName);
-
-        if (! class_exists($modelClass = App::getNamespace().'Models\\'.$modelName)) {
-            $modelClass = App::getNamespace().$modelName;
-        }
-
-        $modelInstance = app($modelClass);
-
-        if (! is_null($callable)) {
-            $callable($modelInstance);
-        }
-
-        return $modelInstance;
-
-    }
-
-    public static function resolve(string $modelName): static
-    {
-        $appNamespace = App::getNamespace();
-
-        $modelName = Str::startsWith($modelName, $appNamespace.'Models\\')
-            ? Str::after($modelName, $appNamespace.'Models\\')
-            : Str::after($modelName, $appNamespace);
-
-        return app(self::getNamespace().$modelName.'Repository');
-    }
+    use HasModel;
 
     public function getAll(array $columns = ['*']): Collection
     {
-        return $this->model()->all($columns);
+        return $this->getModel()->all($columns);
     }
 
     /**
@@ -60,7 +24,7 @@ abstract class ModelRepository implements ModelRepositoryContract, RepositoryCon
      */
     public function find($key, array $columns = ['*'], array $relations = [])
     {
-        $model = $this->model();
+        $model = $this->getModel();
 
         return ! empty($relations)
             ? $model::with($relations)->find($key, $columns)
@@ -72,12 +36,12 @@ abstract class ModelRepository implements ModelRepositoryContract, RepositoryCon
      */
     public function store(array $attributes)
     {
-        return $this->model()::create($attributes);
+        return $this->getModel()::create($attributes);
     }
 
     public function update($key, array $attributes): ?Model
     {
-        $model = $this->model()::find($key);
+        $model = $this->getModel()::find($key);
 
         if ($model) {
             $model->update($attributes);
@@ -90,7 +54,7 @@ abstract class ModelRepository implements ModelRepositoryContract, RepositoryCon
 
     public function delete($key): bool
     {
-        return (bool) $this->model()::whereKey($key)->delete();
+        return (bool) $this->getModel()->whereKey($key)->delete();
     }
 
     public function index(
@@ -99,7 +63,7 @@ abstract class ModelRepository implements ModelRepositoryContract, RepositoryCon
         string $orderBy = 'id',
         string $orderDirection = 'desc'
     ) {
-        $builder = $this->model(fn ($model) => $model::query());
+        $builder = $this->getModel()->query();
 
         // Apply relations
         if (! empty($relations)) {
