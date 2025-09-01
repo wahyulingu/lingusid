@@ -9,7 +9,7 @@ class GetMenuByIdAction extends Action
 {
     public function __construct(private MenuRepository $menuRepository) {}
 
-    public function handler($payload, array $validatedPayload = []): mixed
+    public function handler($payload = null, array $validatedPayload = []): mixed
     {
         return $this->menuRepository->find($payload['id']);
     }

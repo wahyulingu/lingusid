@@ -11,7 +11,7 @@ class UpdateResidentAction extends Action
         protected SidResidentRepository $residentRepository
     ) {}
 
-    protected function handler($payload, array $validatedPayload = []): mixed
+    protected function handler($payload = null, array $validatedPayload = []): mixed
     {
         return $this->residentRepository->update($payload['resident']->getKey(), $validatedPayload);
     }

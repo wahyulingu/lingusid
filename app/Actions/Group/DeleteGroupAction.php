@@ -9,7 +9,7 @@ class DeleteGroupAction extends Action
 {
     public function __construct(protected GroupRepository $groupRepository) {}
 
-    protected function handler($payload, array $validatedPayload = []): bool
+    protected function handler($payload = null, array $validatedPayload = []): bool
     {
         return $this->groupRepository->delete($payload['group']->id);
     }

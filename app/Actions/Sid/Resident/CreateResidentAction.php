@@ -11,7 +11,7 @@ class CreateResidentAction extends Action
         protected SidResidentRepository $residentRepository
     ) {}
 
-    protected function handler($payload, array $validatedPayload = []): mixed
+    protected function handler($payload = null, array $validatedPayload = []): mixed
     {
         return $this->residentRepository->store($validatedPayload);
     }

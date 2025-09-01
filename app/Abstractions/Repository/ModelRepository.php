@@ -2,102 +2,91 @@
 
 namespace App\Abstractions\Repository;
 
-use App\Abstractions\Traits\Repository\HasModel;
 use App\Contracts\Repository\ModelRepositoryContract;
+use Closure;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
  */
 abstract class ModelRepository implements ModelRepositoryContract
 {
-    use HasModel;
-
-    public function getAll(array $columns = ['*']): Collection
+    final public static function getNamespace(): string
     {
-        return $this->getModel()->all($columns);
+        return App::getNamespace().'Repositories\\';
     }
 
-    /**
-     * @return TModel|null
-     */
-    public function find($key, array $columns = ['*'], array $relations = [])
+    final public function query(?Closure $callable = null): Builder
     {
-        $model = $this->getModel();
+        $repositoryName = Str::replaceFirst(self::getNamespace(), '', get_class($this));
+        $modelName = Str::replaceLast('Repository', '', $repositoryName);
 
-        return ! empty($relations)
-            ? $model::with($relations)->find($key, $columns)
-            : $model::find($key, $columns);
-    }
-
-    /**
-     * @return TModel
-     */
-    public function store(array $attributes)
-    {
-        return $this->getModel()::create($attributes);
-    }
-
-    public function update($key, array $attributes): ?Model
-    {
-        $model = $this->getModel()::find($key);
-
-        if ($model) {
-            $model->update($attributes);
-
-            return $model;
+        if (! class_exists($modelClass = App::getNamespace().'Models\\'.$modelName)) {
+            $modelClass = App::getNamespace().$modelName;
         }
 
-        return null;
+        $builder = app($modelClass)->newQuery();
+
+        if (! is_null($callable)) {
+            $callable($builder);
+        }
+
+        return $builder;
     }
 
-    public function delete($key): bool
+    final public static function resolve(string $modelName): static
     {
-        return (bool) $this->getModel()->whereKey($key)->delete();
+        $appNamespace = App::getNamespace();
+
+        $modelName = Str::startsWith($modelName, $appNamespace.'Models\\')
+            ? Str::after($modelName, $appNamespace.'Models\\')
+            : Str::after($modelName, $appNamespace);
+
+        return app(self::getNamespace().$modelName.'Repository');
     }
 
-    public function index(
-        array $filters = [],
-        array $relations = [],
-        string $orderBy = 'id',
-        string $orderDirection = 'desc'
-    ) {
-        $builder = $this->getModel()->query();
+    public function all(array $columns = ['*']): Collection
+    {
+        return $this->query()->get($columns);
+    }
 
-        // Apply relations
-        if (! empty($relations)) {
-            $builder->with($relations);
-        }
+    public function find(int|string $id, array $columns = ['*']): ?Model
+    {
+        return $this->query()->find($id, $columns);
+    }
 
-        // Apply filters
-        foreach ($filters as $filterKey => $filterValue) {
-            if ($filterKey === 'exclude' && is_array($filterValue)) {
-                foreach ($filterValue as $excludeKey => $excludeValue) {
-                    $builder->where($excludeKey, '!=', $excludeValue);
-                }
-            } elseif (is_string($filterValue)) {
-                foreach (explode('|', $filterKey) as $keyIndex => $keyValue) {
-                    if ($keyValue !== '') {
-                        if (str_ends_with($keyValue, ':')) {
-                            $key = substr($keyValue, 0, -1);
-                            $builder->where($key, 'LIKE', $filterValue);
-                        } else {
-                            $builder->where($keyValue, $filterValue);
-                        }
-                    }
-                }
-            } elseif (is_scalar($filterValue)) {
-                $builder->where($filterKey, $filterValue);
-            } elseif ($filterValue instanceof Model) {
-                $builder->whereHas($filterKey, fn ($q) => $q->where(
-                    $filterValue->getKeyName(),
-                    $filterValue->getKey()
-                ));
-            }
-        }
+    public function findOrFail(int|string $id, array $columns = ['*']): Model
+    {
+        return $this->query()->findOrFail($id, $columns);
+    }
 
-        // Apply ordering
-        return $builder->orderBy($orderBy, $orderDirection);
+    public function store(array $data): Model
+    {
+        return $this->query()->create($data);
+    }
+
+    public function update(int|string $id, array $data): bool
+    {
+        return $this->findOrFail($id)->update($data);
+    }
+
+    public function delete(int|string $id): bool
+    {
+        return $this->findOrFail($id)->delete();
+    }
+
+    public function paginate(int $perPage = 15, array $columns = ['*']): LengthAwarePaginator
+    {
+        return $this->query()->paginate($perPage, $columns);
+    }
+
+    public function findBySlug(string $slug, array $columns = ['*']): ?Model
+    {
+        return $this->query()->where('slug', $slug)->first($columns);
     }
 }

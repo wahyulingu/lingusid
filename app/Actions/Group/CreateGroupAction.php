@@ -11,7 +11,7 @@ class CreateGroupAction extends Action implements RuledActionContract
 {
     public function __construct(protected GroupRepository $groupRepository) {}
 
-    protected function handler($payload, array $validatedPayload = []): Group
+    protected function handler($payload = null, array $validatedPayload = []): Group
     {
         return $this->groupRepository->store([
             'name' => $validatedPayload['name'],

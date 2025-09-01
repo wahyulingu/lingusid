@@ -13,7 +13,7 @@ class GetMenusAction extends Action
     /**
      * @return Collection<Menu>
      */
-    public function handler($payload, array $validatedPayload = []): Collection
+    public function handler($payload = null, array $validatedPayload = []): Collection
     {
         return $this->menuRepository->all();
     }

@@ -34,7 +34,7 @@ class Group extends Model
      */
     public function children(): MorphToMany
     {
-        return $this->morph(self::class);
+        return $this->morph(static::class);
     }
 
     public function morph($entity): MorphToMany

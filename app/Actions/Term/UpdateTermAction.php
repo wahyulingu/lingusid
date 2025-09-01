@@ -12,7 +12,7 @@ class UpdateTermAction extends Action implements RuledActionContract
 {
     public function __construct(protected TermRepository $termRepository) {}
 
-    protected function handler($payload, array $validatedPayload = []): Term
+    protected function handler($payload = null, array $validatedPayload = []): Term
     {
         $termId = $validatedPayload['id'];
         unset($validatedPayload['id']);
