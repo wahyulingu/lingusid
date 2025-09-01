@@ -4,7 +4,6 @@ namespace App\Actions\Term;
 
 use App\Abstractions\Actions\Action;
 use App\Contracts\Action\RuledActionContract;
-use App\Models\Term;
 use App\Repositories\TermRepository;
 use Illuminate\Validation\Rule;
 
@@ -12,7 +11,7 @@ class UpdateTermAction extends Action implements RuledActionContract
 {
     public function __construct(protected TermRepository $termRepository) {}
 
-    protected function handler($payload = null, array $validatedPayload = []): Term
+    protected function handler($payload = null, array $validatedPayload = []): bool
     {
         $termId = $validatedPayload['id'];
         unset($validatedPayload['id']);

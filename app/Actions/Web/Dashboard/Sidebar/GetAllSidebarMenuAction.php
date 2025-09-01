@@ -27,7 +27,7 @@ class GetAllSidebarMenuAction extends Action
         $sidebarMainMenuGroup = $this
 
             ->ensureSystemGroupExists
-            ->execute(GroupEnum::DASHBOARD_SIDEBAR_MENU->value);
+            ->handle(GroupEnum::DASHBOARD_SIDEBAR_MENU->value);
 
         $sidebarMenu = $this
 

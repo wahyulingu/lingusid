@@ -18,13 +18,12 @@ class SidResidentController extends Controller
         protected CreateSidResidentAction $createSidResidentAction,
         protected UpdateSidResidentAction $updateSidResidentAction,
         protected DeleteSidResidentAction $deleteSidResidentAction
-    ) {
-    }
+    ) {}
 
     public function index()
     {
         return Inertia::render('Sid/Population/Residents/Index', [
-            'residents' => $this->getSidResidentsAction->execute(),
+            'residents' => $this->getSidResidentsAction->handle(),
         ]);
     }
 
@@ -35,7 +34,7 @@ class SidResidentController extends Controller
 
     public function store(Request $request)
     {
-        $this->createSidResidentAction->execute($request->all());
+        $this->createSidResidentAction->handle($request->all());
 
         return redirect()->route('dashboard.sid.population.residents.index');
     }
@@ -49,7 +48,7 @@ class SidResidentController extends Controller
 
     public function update(Request $request, SidResident $resident)
     {
-        $this->updateSidResidentAction->execute([
+        $this->updateSidResidentAction->handle([
             'resident' => $resident,
         ] + $request->all());
 
@@ -58,7 +57,7 @@ class SidResidentController extends Controller
 
     public function destroy(SidResident $resident)
     {
-        $this->deleteSidResidentAction->execute($resident);
+        $this->deleteSidResidentAction->handle($resident);
 
         return redirect()->route('dashboard.sid.population.residents.index');
     }

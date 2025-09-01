@@ -18,19 +18,12 @@ abstract class Action
      */
     abstract protected function handler($payload = null, array $validatedPayload = []): mixed;
 
-    final public function bypassRules(): static
-    {
-        $this->ruleBypassed = true;
-
-        return $this;
-    }
-
     /**
      * Execute the action.
      *
      * @param  array  $payload  The data for the action.
      */
-    public function execute(mixed $payload = null)
+    public function handle(mixed $payload = null)
     {
         if (! $this->ruleBypassed && $this instanceof RuledActionContract) {
             if (is_array($payload)) {
@@ -44,16 +37,5 @@ abstract class Action
         }
 
         return $this->handler($payload);
-    }
-
-    /**
-     * Statically handle the action.
-     *
-     * @param  array  $payload  The data for the action.
-     * @param  callable|null  $before  A callback to execute before the action.
-     */
-    final public static function handle(mixed $payload = null): mixed
-    {
-        return app(static::class)->execute($payload);
     }
 }

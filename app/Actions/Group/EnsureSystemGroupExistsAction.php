@@ -23,7 +23,6 @@ class EnsureSystemGroupExistsAction extends Action
      */
     protected function handler($groupKey = null, array $validatedPayload = []): Group
     {
-
         if (! is_string($groupKey)) {
 
             throw new InvalidArgumentException('Expected string groupKey for group slug.');
@@ -37,7 +36,7 @@ class EnsureSystemGroupExistsAction extends Action
             $name = Str::of($slug)->replace('-', ' ')->title()->toString();
             $description = sprintf('This group is for the %s functionalities.', Str::lower($name));
 
-            return $this->createGroupAction->bypassRules()->execute(compact('name', 'description'));
+            return $this->createGroupAction->handle(compact('name', 'description'));
         }
 
         return $group;

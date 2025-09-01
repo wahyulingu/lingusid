@@ -15,7 +15,7 @@ class MenuSeeder extends Seeder
      */
     public function run(EnsureSystemGroupExistsAction $ensureSystemGroupExists): void
     {
-        $dashboardGroup = $ensureSystemGroupExists->execute(GroupEnum::DASHBOARD_SIDEBAR_MENU->value);
+        $dashboardGroup = $ensureSystemGroupExists->handle(GroupEnum::DASHBOARD_SIDEBAR_MENU->value);
 
         // Menu Dashboard
         $this->createDashboardMenus($dashboardGroup);

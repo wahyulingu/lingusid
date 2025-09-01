@@ -4,17 +4,16 @@ namespace App\Actions\Group;
 
 use App\Abstractions\Actions\Action;
 use App\Contracts\Action\RuledActionContract;
-use App\Models\Group;
 use App\Repositories\GroupRepository;
 
 class UpdateGroupAction extends Action implements RuledActionContract
 {
     public function __construct(protected GroupRepository $groupRepository) {}
 
-    protected function handler($group, array $validatedPayload = []): Group
+    protected function handler($payload = null, array $validatedPayload = []): mixed
     {
-        $groupId = $validatedPayload['id'];
-        unset($validatedPayload['id']);
+        $groupId = $payload['id'];
+        unset($payload['id']);
 
         return $this->groupRepository->update($groupId, $validatedPayload);
     }
@@ -27,7 +26,6 @@ class UpdateGroupAction extends Action implements RuledActionContract
             'type' => 'nullable|string|max:255',
             'url' => 'nullable|string|max:255',
             'icon' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:groups,id',
             'id' => 'required|exists:groups,id',
         ];
     }

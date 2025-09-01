@@ -11,7 +11,7 @@ class CreateTermAction extends Action
 {
     public function __construct(protected TermRepository $termRepository) {}
 
-    protected function handler($term, array $validatedPayload = []): Term
+    protected function handler($term = null, array $validatedPayload = []): Term
     {
         if (is_string($term)) {
             return $this->termRepository->store(['text' => $term]);

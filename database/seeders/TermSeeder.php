@@ -52,17 +52,9 @@ class TermSeeder extends Seeder
                 ]);
             })->values();
 
-            $flatTerms = collect($data)->flatMap(function ($item) {
-                return collect($item['terms'])->map(fn ($term) => [
-                    'term' => $term,
-                    'groupKey' => $item['groupKey'],
-                    'groupLabel' => $item['groupLabel'] ?? ucfirst(str_replace('_', ' ', $item['groupKey'])),
-                ]);
-            })->values();
-
             $progress = progress(
                 label: '🔄 Menanamkan frasa ke dalam sistem...',
-                steps: $flatTerms->toArray(),
+                steps: $flatTerms->count(),
             );
 
             $flatTerms->each(function ($item) use ($ensureSystemGroupExists, $createTerm, $progress, $flatTerms) {
@@ -71,9 +63,9 @@ class TermSeeder extends Seeder
                     ->hint('Kategori: '.$item['groupLabel']);
 
                 $ensureSystemGroupExists
-                    ->execute($item['groupKey'], $item['groupLabel'])
+                    ->handle($item['groupKey'])
                     ->morph(Term::class)
-                    ->save($createTerm->execute($item['term']));
+                    ->save($createTerm->handle($item['term']));
 
                 if ($flatTerms->last() === $item) {
                     $progress

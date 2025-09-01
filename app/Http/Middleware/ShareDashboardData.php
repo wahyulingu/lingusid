@@ -28,7 +28,7 @@ class ShareDashboardData
         Inertia::share([
             'sidebarMenus' => function (GetAllSidebarMenuAction $getAllSidebarMenu) {
 
-                return $getAllSidebarMenu->execute();
+                return $getAllSidebarMenu->handle();
             },
         ]);
 

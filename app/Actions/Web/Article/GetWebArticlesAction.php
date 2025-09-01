@@ -3,9 +3,9 @@
 namespace App\Actions\Web\Article;
 
 use App\Abstractions\Actions\Action;
+use App\Models\Web\WebArticle;
 use App\Repositories\Web\WebArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
-use App\Models\Web\WebArticle;
 
 class GetWebArticlesAction extends Action
 {
@@ -16,6 +16,6 @@ class GetWebArticlesAction extends Action
      */
     public function handler($payload = [], array $validatedPayload = []): Collection
     {
-        return $this->webArticleRepository->with(['author', 'groups'])->all();
+        return $this->webArticleRepository->with(['author', 'groups'])->get();
     }
 }

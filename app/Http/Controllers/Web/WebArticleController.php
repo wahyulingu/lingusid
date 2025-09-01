@@ -7,6 +7,8 @@ use App\Actions\Web\Article\DeleteWebArticleAction;
 use App\Actions\Web\Article\GetWebArticlesAction;
 use App\Actions\Web\Article\GetWebArticleAction;
 use App\Actions\Web\Article\UpdateWebArticleAction;
+use App\Actions\Group\EnsureSystemGroupExistsAction;
+use App\Enums\System\GroupEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -22,9 +24,13 @@ class WebArticleController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(EnsureSystemGroupExistsAction $ensureSystemGroupExistsAction)
     {
-        return Inertia::render('Web/Articles/Create');
+        $categoryGroup = $ensureSystemGroupExistsAction->handle(GroupEnum::CONTENT_ARTICLE_CATEGORY->value);
+
+        return Inertia::render('Web/Articles/Create', [
+            'groups' => $categoryGroup->children,
+        ]);
     }
 
     public function store(Request $request, CreateWebArticleAction $createWebArticleAction)
@@ -56,11 +62,7 @@ class WebArticleController extends Controller
 
     public function update(Request $request, $id, UpdateWebArticleAction $updateWebArticleAction)
     {
-        $article = $updateWebArticleAction->handle($id, $request->except('group_id'));
-
-        if ($request->has('group_id')) {
-            $article->groups()->sync($request->input('group_id'));
-        }
+        $updateWebArticleAction->handle($id, $request->all());
 
         return redirect()->route('dashboard.web.articles.index');
     }
@@ -70,8 +72,5 @@ class WebArticleController extends Controller
         $deleteWebArticleAction->handle($id);
 
         return redirect()->route('dashboard.web.articles.index');
-    }
-}
-');
     }
 }

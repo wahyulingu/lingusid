@@ -87,6 +87,11 @@ abstract class ModelRepository implements ModelRepositoryContract
 
     public function findBySlug(string $slug, array $columns = ['*']): ?Model
     {
-        return $this->query()->where('slug', $slug)->first($columns);
+        return $this->query(fn ($q) => $q->where('slug', $slug))->first($columns);
+    }
+
+    public function with($relations): Builder
+    {
+        return $this->query(fn (Builder $q) => $q->with($relations));
     }
 }

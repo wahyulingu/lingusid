@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Dashboard\Web\MenuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Web\ArticleCategoryController;
+use App\Http\Controllers\Web\WebArticleController;
 use App\Http\Middleware\ShareDashboardData;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,8 +32,12 @@ Route::middleware(['auth', 'verified', ShareDashboardData::class])->group(functi
 
     // Dashboard Web routes
     Route::prefix('dashboard/web')->name('dashboard.web.')->group(function () {
-        Route::resource('menu', MenuController::class);
-        Route::resource('articles', \App\Http\Controllers\Web\WebArticleController::class);
+        Route::prefix('articles')->name('articles.')->group(function () {
+
+            Route::resource('categories', ArticleCategoryController::class);
+        });
+
+        Route::resource('articles', WebArticleController::class);
     });
 });
 

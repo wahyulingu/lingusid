@@ -19,22 +19,22 @@ class MenuController extends Controller
         GetMenuByGroupAction $getMenuByGroup)
     {
         return Inertia::render('Dashboard/Web/Menu/Index', [
-            'menus' => $getMenuByGroup->execute([
-                'id' => $getMainNavigationGroupAction->execute()->getKey(),
+            'menus' => $getMenuByGroup->handle([
+                'id' => $getMainNavigationGroupAction->handle()->getKey(),
             ]),
         ]);
     }
 
     public function store(Request $request, CreateMenuAction $action)
     {
-        $action->execute($request->all());
+        $action->handle($request->all());
 
         return redirect()->route('dashboard.web.menu.index');
     }
 
     public function update(Request $request, Menu $menu, UpdateMenuAction $action)
     {
-        $action->execute($request->all(), ['menu' => $menu]);
+        $action->handle($request->all(), ['menu' => $menu]);
 
         return redirect()->route('dashboard.web.menu.index');
     }
@@ -55,7 +55,7 @@ class MenuController extends Controller
 
     public function destroy(Menu $menu, DeleteMenuByIdAction $action)
     {
-        $action->execute(['menu' => $menu]);
+        $action->handle(['menu' => $menu]);
 
         return redirect()->route('dashboard.web.menu.index');
     }

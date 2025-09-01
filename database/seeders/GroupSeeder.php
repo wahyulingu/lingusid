@@ -17,9 +17,10 @@ class GroupSeeder extends Seeder
      */
     public function run(EnsureSystemGroupExistsAction $ensureSystemGroupExistsAction): void
     {
-        $mainGroup = $ensureSystemGroupExistsAction->execute('main');
 
-        DB::transaction(function () use ($ensureSystemGroupExistsAction, $mainGroup) {
+        DB::transaction(function () use ($ensureSystemGroupExistsAction) {
+            $mainGroup = $ensureSystemGroupExistsAction->handle('main');
+
             progress(
                 label  : '⏳ Menyiapkan grup sistem',
                 steps  : GroupEnum::cases(),          // iterable = total langkah
