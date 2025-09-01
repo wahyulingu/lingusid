@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified', ShareDashboardData::class])->group(functi
     // Dashboard Web routes
     Route::prefix('dashboard/web')->name('dashboard.web.')->group(function () {
         Route::resource('menu', MenuController::class);
+        Route::resource('articles', \App\Http\Controllers\Web\WebArticleController::class);
     });
 });
 

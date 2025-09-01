@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('web_articles', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('content');
+            $table->timestamp('published_at')->nullable();
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

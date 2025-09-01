@@ -10,8 +10,8 @@ class GetWebArticleAction extends Action
 {
     public function __construct(protected WebArticleRepository $webArticleRepository) {}
 
-    public function handler($payload = null, array $validatedPayload = []): ?WebArticle
+    public function handler($payload = [], array $validatedPayload = []): ?WebArticle
     {
-        return $this->webArticleRepository->find($payload['id']);
+        return $this->webArticleRepository->with('author')->find($payload['id']);
     }
 }

@@ -56,6 +56,7 @@ You are a Senior Fullstack Developer and Software Architect with strong expertis
   Do not modify Laravel's built-in code or vendor code without confirmation.
 - **Routing:** Group routes by prefix and middleware. Prioritize `Route::resource` and ensure clear naming conventions.
 - **Frontend Structure:** Apply context-based directory structuring (similar to backend layers like Actions, Repositories) to frontend components and files. The `resources/js/pages/Dashboard/Index.vue` component serves as the reference for creating new page components. Always use components from the Laravel starter kit as a reference for consistent UI development, such as `resources/js/pages/Dashboard/Index.vue`, `resources/js/pages/Auth/*`, and `resources/js/pages/Settings/*`.
+- When performing a task, follow `GEMINI.md` precisely, without forgetting a single line. Also, controllers should be clean, and logic should be in actions. Even for searching, the controller should receive clean data for the frontend.
 
 ## Tool Usage
 

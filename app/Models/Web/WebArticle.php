@@ -2,12 +2,13 @@
 
 namespace App\Models\Web;
 
+use App\Abstractions\Traits\Model\HasGroups;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class WebArticle extends Model
 {
-    use HasFactory;
+    use HasFactory, HasGroups;
 
     /**
      * The table associated with the model.
@@ -37,4 +38,9 @@ class WebArticle extends Model
     protected $casts = [
         'published_at' => 'datetime',
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'author_id');
+    }
 }

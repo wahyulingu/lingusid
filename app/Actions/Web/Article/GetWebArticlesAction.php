@@ -14,8 +14,8 @@ class GetWebArticlesAction extends Action
     /**
      * @return Collection<WebArticle>
      */
-    public function handler($payload = null, array $validatedPayload = []): Collection
+    public function handler($payload = [], array $validatedPayload = []): Collection
     {
-        return $this->webArticleRepository->all();
+        return $this->webArticleRepository->with(['author', 'groups'])->all();
     }
 }
