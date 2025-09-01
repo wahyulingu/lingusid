@@ -3,14 +3,9 @@
 namespace App\Repositories\Sid;
 
 use App\Abstractions\Repository\ModelRepository;
-use App\Models\Resident;
 use App\Models\Sid\SidResident;
-use App\Repositories\Repository;
 
 /**
- * @extends Repository<Resident>
+ * @extends ModelRepository<SidResident>
  */
-class SidResidentRepository extends ModelRepository
-{
-    protected $model = SidResident::class;
-}
+class SidResidentRepository extends ModelRepository {}

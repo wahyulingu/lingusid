@@ -21,7 +21,13 @@ Route::middleware(['auth', 'verified', ShareDashboardData::class])->group(functi
     })->name('dashboard');
 
     // SID routes
-    Route::prefix('dashboard/sid')->name('dashboard.sid.')->group(function () {});
+    Route::prefix('dashboard/sid')->name('dashboard.sid.')->group(function () {
+        Route::prefix('population')->name('population.')->group(function () {
+            Route::resource('residents', \App\Http\Controllers\Sid\SidResidentController::class)->except([
+                'show',
+            ]);
+        });
+    });
 
     // Dashboard Web routes
     Route::prefix('dashboard/web')->name('dashboard.web.')->group(function () {

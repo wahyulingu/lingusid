@@ -21,7 +21,7 @@ class EnsureSystemGroupExistsAction extends Action
      * @param  string  $groupKey  Slug atau identifier untuk grup sistem.
      * @param  array  $validatedPayload  Payload terverifikasi (jika validasi diaktifkan).
      */
-    protected function handler($groupKey, array $validatedPayload = []): Group
+    protected function handler($groupKey = null, array $validatedPayload = []): Group
     {
 
         if (! is_string($groupKey)) {
@@ -30,14 +30,14 @@ class EnsureSystemGroupExistsAction extends Action
         }
 
         $slug = Str::of($groupKey)->start(self::SYSTEM_GROUP_PREFIX)->slug()->toString();
-        $group = $this->groupRepository->index(filters: compact('slug'))->first();
+        $group = $this->groupRepository->findBySlug($slug);
 
-        if (! $group) {
+        if (! $group instanceof Group) {
 
             $name = Str::of($slug)->replace('-', ' ')->title()->toString();
             $description = sprintf('This group is for the %s functionalities.', Str::lower($name));
 
-            return $this->createGroupAction->handle(compact('name', 'description'));
+            return $this->createGroupAction->bypassRules()->execute(compact('name', 'description'));
         }
 
         return $group;

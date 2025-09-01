@@ -11,7 +11,7 @@ class CreateMenuAction extends Action implements RuledActionContract
 {
     public function __construct(protected MenuRepository $menuRepository) {}
 
-    protected function handler($payload, array $validatedPayload = []): Menu
+    protected function handler($payload = null, array $validatedPayload = []): Menu
     {
         $menu = $this->menuRepository->store([
             'name' => $validatedPayload['name'],

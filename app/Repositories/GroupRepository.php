@@ -2,11 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Abstractions\Traits\Repository\HasModel;
-use App\Contracts\Repository\ModelRepositoryContract;
-use App\Contracts\Repository\RepositoryContract;
+use App\Abstractions\Repository\ModelRepository;
+use Illuminate\Database\Eloquent\Builder;
 
-class GroupRepository implements ModelRepositoryContract, RepositoryContract
+class GroupRepository extends ModelRepository
 {
-    use HasModel;
+    public function indexByParentId(?int $parentId = null)
+    {
+        return $this->query(fn (Builder $query) => $query->where('parent_id', $parentId));
+    }
 }

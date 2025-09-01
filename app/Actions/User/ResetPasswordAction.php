@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class ResetPasswordAction extends Action
 {
-    protected function handler($payload, array $validatedPayload = []): mixed
+    protected function handler($payload = null, array $validatedPayload = []): mixed
     {
         $user = $payload['user'];
         $password = $payload['password'];

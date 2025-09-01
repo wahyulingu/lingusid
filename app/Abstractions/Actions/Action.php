@@ -8,22 +8,31 @@ use InvalidArgumentException;
 
 abstract class Action
 {
+    private bool $ruleBypassed = false;
+
     /**
      * Handle the action's logic.
      *
      * @param  array  $validatedPayload  The validated data.
      * @param  mixed  $payload  The original payload.
      */
-    abstract protected function handler($payload, array $validatedPayload = []): mixed;
+    abstract protected function handler($payload = null, array $validatedPayload = []): mixed;
+
+    final public function bypassRules(): static
+    {
+        $this->ruleBypassed = true;
+
+        return $this;
+    }
 
     /**
      * Execute the action.
      *
      * @param  array  $payload  The data for the action.
      */
-    public function execute(mixed $payload)
+    public function execute(mixed $payload = null)
     {
-        if ($this instanceof RuledActionContract) {
+        if (! $this->ruleBypassed && $this instanceof RuledActionContract) {
             if (is_array($payload)) {
                 $validator = Validator::make($payload, $this->rules($payload));
 
@@ -43,7 +52,7 @@ abstract class Action
      * @param  array  $payload  The data for the action.
      * @param  callable|null  $before  A callback to execute before the action.
      */
-    final public static function handle(mixed $payload): mixed
+    final public static function handle(mixed $payload = null): mixed
     {
         return app(static::class)->execute($payload);
     }

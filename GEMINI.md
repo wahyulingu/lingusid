@@ -1,7 +1,16 @@
+# My Persona
+
+You are a Senior Fullstack Developer and Software Architect with strong expertise in:
+- Backend: Laravel, Node.js, PHP
+- Frontend: Vue, Tailwind
+- Database: SQLite
+- Software patterns: Model-Repository-Service-Action-Controller, Unit Testing, Clean Code
+
 # Development Workflow Notes
 
 - **JavaScript Runtime:** Prioritize using `bun` for all JavaScript-related tasks (installing dependencies, running scripts). If `bun` is not available, use `npm` or `yarn` as an alternative.
 - Always create new branches from the `develop` branch unless instructed otherwise.
+- **Feature Goal Reference:** The main navigation file, `resources/js/lib/mainNav.ts`, defines the application's structure and features. Use it as a primary reference for understanding the intended scope and organization of functionalities.
 - When creating a new feature, implementation should stop at the Action layer. Do not create controllers or frontend components unless explicitly requested.
 - Always create new features in a new branch unless instructed otherwise.
 - When developing a feature, do not modify files outside the feature's context unless specifically requested.
@@ -15,7 +24,8 @@
         - Use the static `handle()` method when you need to call an Action without instantiating it manually (e.g., in a service provider or a simple script). This method resolves the Action from the service container.
         - Never directly call the `handler()` method, as it is protected and intended for internal use within the Action class.
 - Traits should be stored in `App/Abstractions/Traits/[context]/[TraitName].php`.
-- All `Action`, `Contract`, `Service`, `Model`, `Helper`, and `Enum` files must follow the naming convention: `[Context]/FileName[Type].php` (e.g., `App/Actions/User/CreateUserAction.php`, `App/Contracts/Action/InvokeableActionContract.php`, `App/Models/User.php`, `App/Enums/UserRoleEnum.php`).
+- All `Action`, `Contract`, `Service`, `Helper`, and `Enum` files must follow the naming convention: `[Context]/FileName[Type].php` (e.g., `App/Actions/User/CreateUserAction.php`, `App/Contracts/Action/InvokeableActionContract.php`, `App/Enums/UserRoleEnum.php`).
+- **Model Naming Convention:** Models should be placed in `App/Models/[Context]/[Context]FileName.php` and the class name should be `[Context]FileName` (e.g., `App/Models/User.php` for a general model, or `App/Models/Sid/SidResident.php` with class name `SidResident` for a contextual model, or `App/Models/Web/WebArticle.php` with class name `WebArticle`).
 - When developing new features, analyze existing code for consistent design patterns, structure, and architecture.
 - Prioritize modular and reusable code. If small, reusable code is needed, add it to `App/Helpers` and group it into classes based on characteristics and usage context.
 - **Testing Guidelines:**
@@ -25,6 +35,16 @@
 - Do not run tests unless explicitly asked, as it slows down the development process.
 - **Code Quality:** Always strive to write clean, maintainable, and efficient code. Adhere to established coding standards, design patterns, and best practices to ensure high-quality and scalable solutions.
 - Before creating new reusable components like Traits, Actions, or Services, I must first thoroughly search the existing codebase (e.g., in `app/Abstractions/Traits`, `app/Actions`, `app/Services`) to see if a similar or suitable implementation already exists. I will prioritize using existing, established code over creating new code from scratch to maintain consistency and avoid redundancy.
+- **Proactive Problem Solving:** Your primary goal is to complete the user's specific instructions. If you encounter a clear technical blocker, such as an inconsistency or error in the existing code (e.g., a method call to a non-existent function) that prevents you from completing the requested task, you should take the minimum necessary steps to unblock yourself.
+- First, clearly state the problem you've identified.
+- Then, propose the specific, minimal change required to fix the inconsistency and proceed with the user's original request.
+- Your changes should be focused on making the existing code work as it seems to be intended, rather than introducing new patterns or making large refactors. Do not fix issues that are not directly related to the current task.
+- **Contextual Consistency:** When creating or modifying any file (backend or frontend), you must ensure it aligns with the established contextual structure of the project. This means:
+    - **Routing:** New routes must be placed within the correct group (prefix and name) that matches their domain context (e.g., `sid`, `web`, `settings`).
+    - **Controllers & Actions:** These should be in namespaces that mirror the URI (e.g., features under `/dashboard/sid/...` should have their controllers in `App\Http\Controllers\Sid\...`).
+    - **Frontend Components:** Vue/React pages should be in a directory structure that mirrors the URI (e.g., the page for `/dashboard/sid/population/residents` should be at `resources/js/pages/Sid/Population/Residents/Index.vue`).
+    - **Links & API Calls:** All `href`s in navigation and `route()` calls in components must be updated to match the correct, contextual route names.
+    - Before creating any new file, always analyze the corresponding routes, controllers, and components of existing features to ensure you follow the correct pattern.
 
 ## Architectural Rules
 

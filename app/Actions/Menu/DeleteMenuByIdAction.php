@@ -18,7 +18,7 @@ class DeleteMenuByIdAction extends Action implements RuledActionContract
 
     public function __construct(protected MenuRepository $menuRepository) {}
 
-    protected function handler($payload, array $validatedPayload = []): bool
+    protected function handler($payload = null, array $validatedPayload = []): bool
     {
         return $this->menuRepository->delete($validatedPayload['id']);
     }

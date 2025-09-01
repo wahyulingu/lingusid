@@ -2,30 +2,33 @@
 
 namespace App\Models\Sid;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class SidResident extends Model
 {
-    use LogsActivity;
+    use HasFactory;
+
+    protected $table = 'sid_residents';
 
     protected $fillable = [
         'nik',
-        'nama_lengkap',
-        'tempat_lahir',
-        'tanggal_lahir',
-        'jenis_kelamin',
-        'alamat',
-        'status_perkawinan',
-        'pekerjaan',
+        'name',
+        'no_kk',
+        'address',
+        'birth_place',
+        'birth_date',
+        'gender',
+        'religion',
+        'marital_status',
+        'education',
+        'occupation',
+        'nationality',
+        'father_name',
+        'mother_name',
     ];
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable()
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
-    }
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
 }
